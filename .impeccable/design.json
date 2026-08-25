@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-25T00:00:00.000Z",
+  "title": "Design System: KLL Promotora",
+  "extensions": {
+    "colorMeta": {
+      "indigo": {
+        "role": "primary",
+        "displayName": "Tinta de Carimbo",
+        "canonical": "#301a86",
+        "tonalRamp": ["#150b3b", "#1b0f4c", "#21125e", "#281670", "#301a86", "#4c3aa0", "#8d81bc", "#e7e3f3"]
+      },
+      "selo": {
+        "role": "secondary",
+        "displayName": "Amarelo Selo",
+        "canonical": "#ffe608",
+        "tonalRamp": ["#4a4200", "#6b5f00", "#8c7c00", "#ad9a00", "#d9c400", "#ffe608", "#fff06b", "#fffad1"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Papel",
+        "canonical": "#f0efe9",
+        "tonalRamp": ["#17161c", "#2e2d33", "#4a4854", "#66636f", "#9d9aa2", "#c9c6c0", "#e5e3d9", "#f0efe9"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#17161c",
+        "tonalRamp": ["#0a090d", "#17161c", "#2e2d33", "#4a4854", "#66636f", "#9d9aa2", "#c9c6c0", "#f0efe9"]
+      },
+      "online": {
+        "role": "tertiary",
+        "displayName": "Verde de Presença",
+        "canonical": "#12703e",
+        "tonalRamp": ["#052716", "#093d22", "#0d5a30", "#12703e", "#1a8f4f", "#3fb673", "#8bd6ac", "#dcf3e6"]
+      },
+      "alerta": {
+        "role": "tertiary",
+        "displayName": "Âmbar de Aviso",
+        "canonical": "#9a5b00",
+        "tonalRamp": ["#2e1b00", "#4a2c00", "#663d00", "#9a5b00", "#c47600", "#e79a1f", "#f3c47a", "#fbe9cd"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page h1 only. Archivo at wdth 125 and weight 900 — pressed into the paper. Drops to 1.75rem on phones so long Portuguese words clear a 360px viewport."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles, always seated on a hairline rule."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sub-headings, legal clause titles, card headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All running text at 17px minimum, measure capped at 68ch. The audience includes readers over 70."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Column headings, process markers, breadcrumbs, letterhead. Never an eyebrow above a heading."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet",
+        "value": "0 1px 0 #17161c14, 0 18px 40px -22px #17161c73",
+        "purpose": "Chat message bubbles and small raised surfaces. A hairline contact edge plus a wide, low-opacity cast."
+      },
+      {
+        "name": "lift",
+        "value": "0 2px 0 #17161c1f, 0 28px 64px -26px #17161c8c",
+        "purpose": "The hero assistant card, and nothing else. At most one lifted element per viewport."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid #ffe608; outline-offset: 2px; box-shadow: 0 0 0 5px #21125e",
+        "purpose": "Dual ring so focus reads on paper, on an indigo band and on a yellow plate alike."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing curve in the system. Every entrance and nudge uses it."
+      },
+      {
+        "name": "state",
+        "value": "150ms linear",
+        "purpose": "Colour-only feedback on hover and active. Survives prefers-reduced-motion."
+      },
+      {
+        "name": "bubble",
+        "value": "0.42s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "purpose": "Chat bubbles entering in sequence, staggered 70ms apart."
+      },
+      {
+        "name": "sheet-open",
+        "value": "0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "purpose": "The assistant card's transformation from closed to open — the one authored motion moment on the home page."
+      },
+      {
+        "name": "marquee",
+        "value": "46s linear infinite",
+        "purpose": "The partner-bank strip. Pauses on hover and stops entirely under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "container", "value": "1152px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action (on an indigo band)",
+      "kind": "button",
+      "refersTo": "button-primary-on-ink",
+      "description": "The loudest element on any page. One per viewport, never two.",
+      "html": "<button class=\"ds-btn-selo\">Simule seu empréstimo agora<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn-selo { display: inline-flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 12px 20px; border: none; border-radius: 2px; background: #ffe608; color: #17161c; font-family: Archivo, system-ui, sans-serif; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.018em; cursor: pointer; transition: background-color 150ms linear; } .ds-btn-selo svg { width: 24px; height: 24px; flex: none; transition: transform 200ms cubic-bezier(0.16,1,0.3,1); } .ds-btn-selo:hover { background: #d9c400; } .ds-btn-selo:hover svg { transform: translateX(4px); } .ds-btn-selo:focus-visible { outline: 3px solid #ffe608; outline-offset: 2px; box-shadow: 0 0 0 5px #21125e; }"
+    },
+    {
+      "name": "Primary Action (on paper)",
+      "kind": "button",
+      "refersTo": "button-primary-on-paper",
+      "description": "The indigo plate used for in-page actions on the paper ground.",
+      "html": "<a class=\"ds-btn-indigo\" href=\"#\">Falar no WhatsApp</a>",
+      "css": ".ds-btn-indigo { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 24px; border-radius: 2px; background: #301a86; color: #fff; font-family: Archivo, system-ui, sans-serif; font-size: 1.0625rem; font-weight: 600; text-decoration: none; transition: background-color 150ms linear; } .ds-btn-indigo:hover { background: #21125e; } .ds-btn-indigo:focus-visible { outline: 3px solid #ffe608; outline-offset: 2px; box-shadow: 0 0 0 5px #21125e; }"
+    },
+    {
+      "name": "Secondary Action",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "A hairline-edged plate. The edge is 1px; coloured borders above 1px do not exist in this system.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">Solicitar proposta</a>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 24px; border: 1px solid rgba(23,22,28,0.5); border-radius: 2px; background: transparent; color: #17161c; font-family: Archivo, system-ui, sans-serif; font-size: 1.0625rem; font-weight: 600; text-decoration: none; transition: background-color 150ms linear, border-color 150ms linear, color 150ms linear; } .ds-btn-outline:hover { border-color: #301a86; background: #e7e3f3; color: #21125e; } .ds-btn-outline:focus-visible { outline: 3px solid #ffe608; outline-offset: 2px; box-shadow: 0 0 0 5px #21125e; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Label always visible above the field; a placeholder never does a label's job.",
+      "html": "<label class=\"ds-label\" for=\"ds-nome\">Nome completo</label><input class=\"ds-input\" id=\"ds-nome\" type=\"text\" placeholder=\"Como podemos te chamar?\">",
+      "css": ".ds-label { display: block; font-family: Archivo, system-ui, sans-serif; font-size: 0.9375rem; font-weight: 600; color: #17161c; margin-bottom: 8px; } .ds-input { display: block; width: 100%; min-height: 48px; padding: 12px 16px; border: 1px solid rgba(23,22,28,0.5); border-radius: 2px; background: #fff; color: #17161c; font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 1.0625rem; } .ds-input::placeholder { color: #66636f; } .ds-input:hover { border-color: #66636f; } .ds-input:focus-visible { border-color: #301a86; outline: 3px solid #ffe608; outline-offset: 2px; box-shadow: 0 0 0 5px #21125e; }"
+    },
+    {
+      "name": "Selectable Row",
+      "kind": "chip",
+      "refersTo": "tab-row-selected",
+      "description": "A ruled row, not a pill. The selected state is the seal yellow landing on the line the visitor chose; the unselected siblings stay visible.",
+      "html": "<div class=\"ds-rows\"><button class=\"ds-row ds-row--on\"><span><b>Trabalhador CLT</b><em>Carteira assinada, iniciativa privada</em></span><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M20 6 9 17l-5-5\"/></svg></button><button class=\"ds-row\"><span><b>Servidor público</b><em>Federal, estadual ou municipal (SIAPE)</em></span><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button></div>",
+      "css": ".ds-rows { border-top: 1px solid rgba(23,22,28,0.5); } .ds-row { display: flex; width: 100%; align-items: center; gap: 16px; padding: 20px 16px; border: none; border-bottom: 1px solid rgba(23,22,28,0.5); border-radius: 0; background: transparent; color: #17161c; text-align: left; cursor: pointer; transition: background-color 150ms linear; } .ds-row span { flex: 1; } .ds-row b { display: block; font-family: Archivo, system-ui, sans-serif; font-size: 1.1875rem; font-weight: 700; } .ds-row em { display: block; margin-top: 2px; font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.9375rem; font-style: normal; color: #4a4854; } .ds-row svg { width: 20px; height: 20px; flex: none; color: #66636f; } .ds-row:hover { background: #e5e3d9; } .ds-row--on { background: #ffe608; } .ds-row--on em { color: rgba(23,22,28,0.75); } .ds-row--on svg { color: #17161c; } .ds-row--on:hover { background: #ffe608; } .ds-row:focus-visible { outline: 3px solid #ffe608; outline-offset: -3px; box-shadow: inset 0 0 0 6px #21125e; }"
+    },
+    {
+      "name": "Ruled Definition Row",
+      "kind": "card",
+      "refersTo": "tab-row",
+      "description": "The structural unit of the whole site: label left, value right, hairline underneath. Condition tables, company facts and opening hours are all this row.",
+      "html": "<dl class=\"ds-dl\"><div><dt>Taxa</dt><dd>a partir de 1,20% a.m.</dd></div><div><dt>Prazo</dt><dd>até 96 meses</dd></div><div><dt>Consulta SPC/Serasa</dt><dd>não há</dd></div></dl>",
+      "css": ".ds-dl { background: #e5e3d9; padding: 8px 20px; margin: 0; } .ds-dl > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 24px; padding: 16px 0; border-bottom: 1px solid rgba(23,22,28,0.2); } .ds-dl > div:last-child { border-bottom: 0; } .ds-dl dt { font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 1.0625rem; color: #4a4854; } .ds-dl dd { margin: 0; font-family: Archivo, system-ui, sans-serif; font-size: 1.0625rem; font-weight: 700; color: #17161c; font-variant-numeric: tabular-nums lining-nums; }"
+    },
+    {
+      "name": "Header Letterhead",
+      "kind": "nav",
+      "refersTo": "button-primary-on-paper",
+      "description": "The sticky two-deck header. The regulatory strip rides above the bar on every route, because the objection it answers arrives on every route.",
+      "html": "<div class=\"ds-head\"><p class=\"ds-head__strip\">Correspondente bancário autorizado pelo Banco Central · CNPJ 07.814.164/0001-00</p><div class=\"ds-head__bar\"><span class=\"ds-head__mark\">KLL</span><nav><a href=\"#\" class=\"is-current\">Serviços</a><a href=\"#\">Como funciona</a><a href=\"#\">Contato</a></nav></div></div>",
+      "css": ".ds-head__strip { margin: 0; padding: 8px 16px; background: #21125e; color: rgba(255,255,255,0.9); font-family: Archivo, system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; text-align: center; font-variant-numeric: tabular-nums; } .ds-head__bar { display: flex; align-items: center; gap: 24px; padding: 12px 24px; background: #f0efe9; border-bottom: 1px solid rgba(23,22,28,0.2); } .ds-head__mark { font-family: Archivo, system-ui, sans-serif; font-size: 1.1875rem; font-weight: 900; color: #301a86; } .ds-head__bar nav { display: flex; gap: 24px; } .ds-head__bar a { padding-bottom: 2px; border-bottom: 2px solid transparent; color: #4a4854; font-family: 'Libre Franklin', system-ui, sans-serif; font-size: 0.9375rem; font-weight: 600; text-decoration: none; transition: color 150ms linear, border-color 150ms linear; } .ds-head__bar a:hover { color: #17161c; border-bottom-color: rgba(23,22,28,0.5); } .ds-head__bar a.is-current { color: #301a86; border-bottom-color: #ffe608; }"
+    },
+    {
+      "name": "Stamp",
+      "kind": "custom",
+      "refersTo": "button-primary-on-paper",
+      "description": "The system's one signature graphic. Every word on it is a verifiable fact; it carries no regulator's mark and asserts no endorsement.",
+      "html": "<svg class=\"ds-stamp\" viewBox=\"0 0 220 220\"><defs><path id=\"ds-arc-t\" d=\"M 24 110 A 86 86 0 0 1 196 110\" fill=\"none\"/><path id=\"ds-arc-b\" d=\"M 24 110 A 86 86 0 0 0 196 110\" fill=\"none\"/></defs><g stroke=\"currentColor\" fill=\"none\"><circle cx=\"110\" cy=\"110\" r=\"105\" stroke-width=\"3.5\"/><circle cx=\"110\" cy=\"110\" r=\"97\" stroke-width=\"1\" opacity=\"0.7\"/><circle cx=\"110\" cy=\"110\" r=\"74\" stroke-width=\"1.5\" opacity=\"0.85\"/><line x1=\"52\" y1=\"88\" x2=\"168\" y2=\"88\" stroke-width=\"1\" opacity=\"0.7\"/><line x1=\"52\" y1=\"134\" x2=\"168\" y2=\"134\" stroke-width=\"1\" opacity=\"0.7\"/></g><g fill=\"currentColor\"><text font-size=\"13\" font-weight=\"700\" letter-spacing=\"1.1\"><textPath href=\"#ds-arc-t\" startOffset=\"50%\" text-anchor=\"middle\">CORRESPONDENTE BANCÁRIO</textPath></text><text font-size=\"11\" font-weight=\"600\" letter-spacing=\"0.9\"><textPath href=\"#ds-arc-b\" startOffset=\"50%\" text-anchor=\"middle\">NATAL · RIO GRANDE DO NORTE</textPath></text><text x=\"110\" y=\"107\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"600\" letter-spacing=\"3.5\">CNPJ</text><text x=\"110\" y=\"127\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"700\">07.814.164/0001-00</text></g></svg>",
+      "css": ".ds-stamp { width: 160px; height: 160px; color: #301a86; transform: rotate(-3deg); font-family: Archivo, system-ui, sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Documento Carimbado",
+    "overview": "This is the website of a correspondente bancário — a licensed intermediary that carries someone else's loan proposal to a bank. Its single hardest job is proving it is real, because the audience (CLT workers, servidores, INSS pensioners, militares) arrives braced for a scam. So the surface is built like an official stamped document rather than like a bank advertisement: everything sits on ruled rows, every figure is labelled, every actor in the process is named, and the one graphic flourish the system allows itself is a rubber stamp carrying the company's real CNPJ.\n\nThe inks are not chosen, they are inherited. The client's existing seal is a yellow disc with an indigo-violet wordmark, and that indigo (#301a86) happens to be the exact family of a Brazilian stamp pad. The system takes both colours literally: indigo owns whole bands of the page as a printed field, and the yellow is reserved for the places where a stamp would land — the primary action, the selected row, the seal itself.\n\nThe confirmed anti-reference is the category default: the navy-to-blue gradient hero with a smiling stock couple and a metallic gold accent, which is what every consignado site in Brazil ships and what predatory lending advertising looks like. Nothing in this system gradates, glows, or floats.",
+    "keyCharacteristics": [
+      "Ruled rows instead of card grids; the rule is the structural unit.",
+      "Square corners by default; 2px exists only so a thumb-sized control does not cut the finger.",
+      "Flat printed fields of colour; zero gradients anywhere in the system.",
+      "Tabular figures on every rate, term, phone number and CNPJ.",
+      "Body type starts at 17px because the audience includes 70-year-olds.",
+      "One authored motion moment per surface, never scattered hover effects."
+    ],
+    "rules": [
+      { "name": "The Two Inks Rule", "body": "The system has exactly two saturated colours, and both come from the client's seal. A third accent is not a gap to be filled; adding one breaks the claim that the page is printed rather than designed.", "section": "colors" },
+      { "name": "The Stamp-Only Yellow Rule", "body": "#ffe608 appears only where a stamp would land: the primary action on an indigo field, the selected row, and the seal. Yellow never carries text on a light ground, and never fills a region larger than a control.", "section": "colors" },
+      { "name": "The No Gradient Rule", "body": "No gradient, anywhere, in any form — not on text, not on a band, not as a scrim. The only permitted soft edge in the whole system is the mask that fades the partner-logo marquee at its two ends, and that one is functional: it says the strip continues.", "section": "colors" },
+      { "name": "The No Eyebrow Rule", "body": "A small uppercase label never sits above a heading to introduce it. Labels head their own blocks (a table, a list, a strip); headings carry themselves.", "section": "typography" },
+      { "name": "The Tabular Figures Rule", "body": "Every rate, term, percentage, phone number, CNPJ, opening hour and clause number is set in tabular lining figures. In this product every number is money, time or identity, and columns of them must align.", "section": "typography" },
+      { "name": "The Long Word Rule", "body": "Portuguese runs long and the display face is expanded, so headings carry hyphens: auto under lang=\"pt-BR\". Any new heading must be run at 360px with real copy before it ships.", "section": "typography" },
+      { "name": "The One Lifted Thing Rule", "body": "At most one element per viewport carries a shadow. Everything else is flat and separated by a rule or by a change of ground.", "section": "elevation" },
+      { "name": "The Real Shadow Rule", "body": "Every shadow has both a vertical offset and a soft blur. A zero-offset coloured halo is decoration and is not part of this system; neither is a hard block shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do build new sections as ruled rows: a full-width row, a 1px rule-strong bottom edge, label left and value right.",
+      "Do give every quantity tabular-nums — rates, terms, phone numbers, CNPJ, hours, clause numbers.",
+      "Do let indigo own whole regions. A band is a printed field, edge to edge, not a tinted box floating in white space.",
+      "Do keep the seal yellow for the single primary action, the selected row, and the stamp.",
+      "Do run every new heading at 360px with the real Portuguese copy before shipping it.",
+      "Do keep body text at 17px or larger and secondary text at ink-2 or darker; the floor is 4.5:1 and it is measured, not estimated.",
+      "Do name the actor in any process step — você, KLL, banco parceiro — rather than writing in the passive.",
+      "Do mark unconfirmed content as a visible placeholder (dashed edge plus a plain-language note), never as invented copy."
+    ],
+    "donts": [
+      "Don't use rounded-lg or any radius above 2px. Corners in this system are square by decision.",
+      "Don't build a grid of same-size cards with an icon, a heading and a paragraph. That is the scaffold this world exists to refuse; use ruled columns divided by a vertical rule instead.",
+      "Don't nest a card inside a card, or draw a border around a group that already sits on its own ground.",
+      "Don't add a gradient, a glass panel, a blurred scrim or a glow. Not on text, not on a band, not on a hero.",
+      "Don't put a small uppercase label above a heading. Headings carry themselves.",
+      "Don't use an emoji as an icon. Icons are Lucide at a consistent stroke, or authored SVG in the same weight.",
+      "Don't number sections 01 / 02 / 03 unless the sequence is information the reader needs — the process steps and the legal clauses qualify; a list of benefits does not.",
+      "Don't introduce a third saturated colour, a second green, or red. The palette is two inks from the seal plus paper.",
+      "Don't kill motion wholesale under prefers-reduced-motion. Stop the loops, land the entrances finished, and keep colour feedback."
+    ]
+  }
+}

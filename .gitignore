@@ -1,0 +1,20 @@
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+.env
+.env*.local
+.vercel
+
+.DS_Store
+Thumbs.db
+
+.impeccable/review/
+
+# Material de referência para o redesign (spec, código de terceiros, zip do
+# site anterior) — não é código de produção, não vai para o repositório
+# público (evita publicar código de terceiros e o app antigo do cliente).
+/referencias/

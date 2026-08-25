@@ -1,0 +1,258 @@
+@import "tailwindcss" source(none);
+@source "../";
+
+/*
+  KLL Promotora — design tokens.
+  World: "Registro" — a stamped official document.
+  Inks are taken from the client's own seal: #301A86 (carimbo indigo) and
+  #FFE608 (selo yellow). Nothing here is a gradient.
+*/
+
+@theme {
+  /* Paper */
+  --color-paper: #f0efe9;
+  --color-paper-2: #e5e3d9;
+  --color-sheet: #ffffff;
+
+  /* Ink */
+  --color-ink: #17161c;
+  --color-ink-2: #4a4854;
+  --color-ink-3: #66636f;
+
+  /* Brand inks, sampled from the KLL seal */
+  --color-indigo: #301a86;
+  --color-indigo-deep: #21125e;
+  --color-indigo-tint: #e7e3f3;
+  --color-selo: #ffe608;
+  --color-selo-deep: #d9c400;
+
+  /* State */
+  --color-online: #12703e;
+  --color-alerta: #9a5b00;
+
+  /* Rules — the page is ruled like a form, never bordered like a card.
+     `rule-strong` carries every real UI boundary (inputs, controls, section
+     rules) and is held at 3.3:1 against paper; `rule` is the decorative
+     hairline between list rows. Measured, not eyeballed. */
+  --color-rule: #17161c33;
+  --color-rule-strong: #17161c80;
+  --color-rule-ink: #ffffff3d;
+  --color-rule-ink-strong: #ffffff66;
+
+  /* Faces: Archivo (signage/forms grotesque, width axis carries the display
+     voice) + Libre Franklin (Franklin Gothic revival, high x-height for
+     readers over 60). */
+  --font-display: var(--font-archivo), "Arial Narrow", system-ui, sans-serif;
+  --font-sans: var(--font-franklin), system-ui, -apple-system, sans-serif;
+
+  /* Scale — base is 17px, not 16px: the audience includes pensioners. */
+  --text-3xs: 0.625rem;
+  --text-3xs--line-height: 1.35;
+  --text-3xs--letter-spacing: 0.02em;
+  --text-2xs: 0.75rem;
+  --text-2xs--line-height: 1.35;
+  --text-2xs--letter-spacing: 0.09em;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.6;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.45;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.25;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.15;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 1.08;
+  --text-5xl: 3.25rem;
+  --text-5xl--line-height: 1.02;
+  --text-6xl: 4rem;
+  --text-6xl--line-height: 0.98;
+
+  /* The one display step for phones. Proven against the longest real word in
+     the copy ("Correspondente") at 360px in the expanded face. */
+  --text-display-xs: 1.75rem;
+  --text-display-xs--line-height: 1.1;
+
+  /* Documents have square corners. 2px exists only so a thumb-sized control
+     does not cut the finger. */
+  --radius-mark: 2px;
+
+  --shadow-sheet: 0 1px 0 #17161c14, 0 18px 40px -22px #17161c73;
+  --shadow-lift: 0 2px 0 #17161c1f, 0 28px 64px -26px #17161c8c;
+
+  --animate-marquee: marquee 46s linear infinite;
+  --animate-bubble: bubble 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-sheet: sheet 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-blink: blink 1.2s ease-in-out infinite;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes bubble {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes sheet {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* Browser surfaces are part of the design, not the browser's business. */
+    caret-color: var(--color-indigo);
+    scrollbar-color: var(--color-indigo) var(--color-paper-2);
+    scrollbar-width: thin;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-selo);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-selo);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px var(--color-indigo-deep);
+  }
+
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: from-font;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.018em;
+    /* Portuguese runs long — "Correspondente", "Portabilidade" — and the
+       display face is expanded. With lang="pt-BR" the browser breaks these
+       correctly instead of pushing the document wider than the phone. */
+    hyphens: auto;
+  }
+
+  /* Every figure in this product is money, a rate or a term. */
+  time,
+  data,
+  .figure {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Reduced motion is an alternative, not a kill switch. Loops stop because
+     they carry no information; entrances land finished instead of being
+     cancelled (their fill mode is `both`, so a 1ms duration renders the
+     completed state); colour feedback survives, because a hover that does not
+     change anything is a control that looks broken. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .animate-marquee,
+    .animate-blink {
+      animation: none;
+    }
+
+    .animate-blink {
+      opacity: 1;
+    }
+
+    .animate-bubble,
+    .animate-sheet {
+      animation-duration: 1ms;
+    }
+
+    *,
+    *::before,
+    *::after {
+      transition-property: color, background-color, border-color, outline-color,
+        text-decoration-color, box-shadow, opacity;
+      transition-duration: 120ms;
+    }
+
+    /* The 4px arrow nudge is the only travel on hover anywhere; drop it. */
+    .group:hover .group-hover\:translate-x-1 {
+      transform: none;
+    }
+  }
+}
+
+/* The ruled row: the page's structural unit, in place of the card grid. */
+@utility rule-t {
+  border-top: 1px solid var(--color-rule);
+}
+
+@utility rule-b {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+/* A form's double rule under a section title. */
+@utility rule-double {
+  border-bottom: 1px solid var(--color-rule);
+  box-shadow: 0 3px 0 -1px var(--color-rule);
+}
+
+@utility measure {
+  max-width: 68ch;
+}
