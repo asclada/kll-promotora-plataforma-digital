@@ -5,14 +5,17 @@ const facts = [
   {
     icon: ShieldCheck,
     text: "Processo 100% seguro e transparente, sem taxas antecipadas.",
+    short: "Processo 100% seguro",
   },
   {
     icon: HandCoins,
     text: "Taxas a partir de 1,20% ao mês, conforme o seu perfil e o banco parceiro.",
+    short: "Taxas a partir de 1,20% ao mês",
   },
   {
     icon: Clock,
     text: "Dinheiro na conta entre 24 e 48 horas após a aprovação do crédito.",
+    short: "Dinheiro na conta em até 48 horas",
   },
 ];
 
@@ -32,8 +35,8 @@ export default function Hero() {
 
           <p className="measure mt-4 text-lg text-white/85 md:mt-6 md:text-xl">
             <span className="sm:hidden">
-              Correspondente bancário há mais de 20 anos, com mais de 5 mil
-              clientes atendidos.
+              Correspondente bancário há mais de 20 anos, 5 mil+ clientes
+              atendidos.
             </span>
             <span className="hidden sm:inline">
               Correspondente bancário há mais de 20 anos, com mais de 5 mil
@@ -57,7 +60,10 @@ export default function Hero() {
                 className="mt-0.5 size-5.5 shrink-0 text-selo"
                 aria-hidden="true"
               />
-              <span className="text-base text-white/85">{fact.text}</span>
+              <span className="text-base text-white/85">
+                <span className="sm:hidden">{fact.short}</span>
+                <span className="hidden sm:inline">{fact.text}</span>
+              </span>
             </li>
           ))}
         </ul>

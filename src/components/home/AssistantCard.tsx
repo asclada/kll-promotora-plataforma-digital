@@ -178,7 +178,9 @@ export default function AssistantCard() {
 
   return (
     <div ref={root} className="scroll-mt-28 bg-sheet text-ink shadow-lift">
-      {/* Strip — the sheet's letterhead. */}
+      {/* Strip — the sheet's letterhead. `min-w-0`+`truncate` on the label and
+          `shrink-0` on the timestamp-like bits keep "Recomeçar" from being
+          pushed out of the strip on narrow phones. */}
       <div className="flex items-center gap-3 border-b border-rule bg-paper-2 px-5 py-2.5 sm:py-3">
         <Image
           src="/kll-selo.webp"
@@ -187,11 +189,14 @@ export default function AssistantCard() {
           height={32}
           className="size-8 shrink-0"
         />
-        <p className="font-display text-2xs font-semibold tracking-[0.14em] uppercase">
-          Assistente Virtual — KLL Promotora
+        <p className="min-w-0 flex-1 truncate font-display text-2xs font-semibold tracking-[0.14em] uppercase">
+          <span className="sm:hidden">Assistente — KLL</span>
+          <span className="hidden sm:inline">
+            Assistente Virtual — KLL Promotora
+          </span>
         </p>
         {phase !== "closed" && (
-          <span className="flex items-center gap-1.5 text-2xs font-semibold tracking-wide text-online uppercase">
+          <span className="hidden shrink-0 items-center gap-1.5 text-2xs font-semibold tracking-wide text-online uppercase sm:flex">
             <span className="size-2 rounded-full bg-online" aria-hidden="true" />
             online
           </span>
@@ -200,7 +205,7 @@ export default function AssistantCard() {
           <button
             type="button"
             onClick={reset}
-            className="ml-auto flex min-h-9 items-center gap-1.5 rounded-mark px-2 text-xs font-semibold text-ink-2 hover:text-indigo"
+            className="ml-auto flex min-h-9 shrink-0 items-center gap-1.5 rounded-mark px-2 text-xs font-semibold whitespace-nowrap text-ink-2 hover:text-indigo"
           >
             <RotateCcw className="size-4" aria-hidden="true" />
             Recomeçar

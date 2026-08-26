@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
@@ -8,23 +8,46 @@ import { segments } from "@/lib/content";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { requestAssistantOpen } from "@/lib/assistant-bridge";
 
+/** Matches this component's own `lg:grid-cols-[...]` split below — the
+    breakpoint where the panel actually moves from under the tab list to
+    beside it, not a generic "phone" cutoff. */
+const DESKTOP_QUERY = "(min-width: 1024px)";
+
 /**
- * Four regimes, one panel. Every row stays visible at all times — the reader
- * must be able to see that their own case is on the list before they click
- * anything. Selecting a row stamps it and swaps the panel; nothing navigates.
+ * Four regimes, one panel. Below `lg` the panel sits under the tab list, so
+ * nothing starts selected there — a pre-picked row with its content already
+ * populated off-screen just reads as "nothing happened" when tapped again.
+ * At `lg`+ the panel sits beside the list, always visible, so CLT is
+ * pre-selected there like before.
  */
 export default function SegmentsPanel() {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<number | null>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-  const segment = segments[active];
+  const panel = useRef<HTMLDivElement>(null);
+  const segment = active !== null ? segments[active] : null;
+
+  useLayoutEffect(() => {
+    if (window.matchMedia(DESKTOP_QUERY).matches) setActive(0);
+  }, []);
+
+  useEffect(() => {
+    if (active === null) return;
+    /* Only nudge the scroll where the selection would otherwise be
+       invisible below the fold. At `lg`+ the panel is already beside the
+       list — including on the very first, programmatic selection above. */
+    if (!window.matchMedia(DESKTOP_QUERY).matches) {
+      panel.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [active]);
 
   function onKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
     const last = segments.length - 1;
+    const current = active ?? -1;
     let next: number | null = null;
     if (event.key === "ArrowDown" || event.key === "ArrowRight")
-      next = active === last ? 0 : active + 1;
+      next = current === last ? 0 : current + 1;
     if (event.key === "ArrowUp" || event.key === "ArrowLeft")
-      next = active === 0 ? last : active - 1;
+      next = current <= 0 ? last : current - 1;
     if (event.key === "Home") next = 0;
     if (event.key === "End") next = last;
     if (next === null) return;
@@ -55,6 +78,7 @@ export default function SegmentsPanel() {
           >
           {segments.map((item, index) => {
             const selected = index === active;
+            const focusable = active === null ? index === 0 : selected;
             return (
               <button
                 key={item.slug}
@@ -66,7 +90,7 @@ export default function SegmentsPanel() {
                 id={`segmento-aba-${item.slug}`}
                 aria-selected={selected}
                 aria-controls={`segmento-painel-${item.slug}`}
-                tabIndex={selected ? 0 : -1}
+                tabIndex={focusable ? 0 : -1}
                 onClick={() => setActive(index)}
                 onKeyDown={onKeyDown}
                 className={`flex w-full items-center gap-4 border-b border-rule-strong px-4 py-5 text-left transition-colors duration-150 ${
@@ -109,43 +133,46 @@ export default function SegmentsPanel() {
           </p>
         </div>
 
-        <div
-          role="tabpanel"
-          id={`segmento-painel-${segment.slug}`}
-          aria-labelledby={`segmento-aba-${segment.slug}`}
-          tabIndex={0}
-          key={segment.slug}
-          className="animate-sheet"
-        >
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-paper-2 sm:aspect-[2/1] lg:aspect-[16/9]">
-            <Image
-              src={segment.image.src}
-              alt={segment.image.alt}
-              fill
-              sizes="(min-width: 1024px) 44rem, 100vw"
-              className="object-cover"
-            />
-          </div>
-
-          <h3 className="mt-7 font-display text-2xl font-black md:text-3xl">
-            {segment.headline}
-          </h3>
-          <p className="measure mt-4 text-lg text-ink-2">{segment.body}</p>
-
-          <p className="mt-6 flex items-start gap-3 border-t border-b border-rule-strong py-4 text-base font-semibold">
-            <Check className="mt-0.5 size-5 shrink-0 text-indigo" aria-hidden="true" />
-            {segment.proof}
-          </p>
-
-          <button
-            type="button"
-            onClick={() => requestAssistantOpen()}
-            className="mt-6 inline-flex min-h-12 items-center gap-2.5 rounded-mark bg-indigo px-6 py-3 font-display text-base font-semibold text-white transition-colors duration-150 hover:bg-indigo-deep"
+        {segment && (
+          <div
+            ref={panel}
+            role="tabpanel"
+            id={`segmento-painel-${segment.slug}`}
+            aria-labelledby={`segmento-aba-${segment.slug}`}
+            tabIndex={0}
+            key={segment.slug}
+            className="scroll-mt-28 animate-sheet"
           >
-            Simular como {segment.name}
-            <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
-          </button>
-        </div>
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-paper-2 sm:aspect-[2/1] lg:aspect-[16/9]">
+              <Image
+                src={segment.image.src}
+                alt={segment.image.alt}
+                fill
+                sizes="(min-width: 1024px) 44rem, 100vw"
+                className="object-cover"
+              />
+            </div>
+
+            <h3 className="mt-7 font-display text-2xl font-black md:text-3xl">
+              {segment.headline}
+            </h3>
+            <p className="measure mt-4 text-lg text-ink-2">{segment.body}</p>
+
+            <p className="mt-6 flex items-start gap-3 border-t border-b border-rule-strong py-4 text-base font-semibold">
+              <Check className="mt-0.5 size-5 shrink-0 text-indigo" aria-hidden="true" />
+              {segment.proof}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => requestAssistantOpen()}
+              className="mt-6 inline-flex min-h-12 items-center gap-2.5 rounded-mark bg-indigo px-6 py-3 font-display text-base font-semibold text-white transition-colors duration-150 hover:bg-indigo-deep"
+            >
+              Simular como {segment.name}
+              <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
