@@ -284,7 +284,7 @@ export const partnerBanks: PartnerBank[] = [
   { name: "Banco Daycoval", logo: "/images/bancos/daycoval.png" },
   { name: "Banrisul", logo: "/images/bancos/banrisul.svg" },
   { name: "C6 Bank", logo: "/images/bancos/c6-bank.svg" },
-  { name: "Banco BMG", logo: "/images/bancos/bmg.png", scale: 1.2 },
+  { name: "Banco BMG", logo: "/images/bancos/bmg.png" },
   { name: "Banco Safra", logo: "/images/bancos/safra.svg", pad: "p-3" },
   { name: "VCTex", logo: "/images/bancos/vctex.png" },
   { name: "V8 Digital", logo: null, icon: "/images/bancos/v8.webp" },
