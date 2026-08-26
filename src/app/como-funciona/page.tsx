@@ -11,7 +11,7 @@ import { breadcrumbJsonLd } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Como Funciona o Consignado em Natal RN",
   description:
-    "Da solicitação à liberação em quatro etapas: veja quem faz o quê, quais documentos enviar e em quanto tempo o dinheiro cai na conta. Tire dúvidas com a KLL.",
+    "Da solicitação à liberação em quatro etapas: quem faz o quê, os documentos e o prazo até o dinheiro cair na conta. Tire dúvidas com a KLL Promotora.",
   alternates: { canonical: "/como-funciona" },
 };
 
@@ -152,7 +152,7 @@ export default function ComoFuncionaPage() {
               className="size-6 shrink-0 text-indigo"
               aria-hidden="true"
             />
-            O que a KLL nunca faz
+            O que a KLL Promotora nunca faz
           </h2>
           <ul className="mt-1">
             {neverDoes.map((item) => (
@@ -165,8 +165,9 @@ export default function ComoFuncionaPage() {
             ))}
           </ul>
           <p className="mt-5 text-base text-ink-3">
-            Desconfie de qualquer pessoa que peça depósito antecipado em nome da
-            KLL. Na dúvida, ligue para os nossos números e confirme.
+            Desconfie de qualquer pessoa que peça depósito antecipado em nome
+            da KLL Promotora. Na dúvida, ligue para os nossos números e
+            confirme.
           </p>
         </section>
 

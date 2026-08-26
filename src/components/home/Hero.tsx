@@ -1,19 +1,18 @@
-import { ShieldCheck, HandCoins, MapPin } from "lucide-react";
+import { ShieldCheck, HandCoins, Clock } from "lucide-react";
 import AssistantCard from "./AssistantCard";
-import { fullAddress } from "@/lib/site";
 
 const facts = [
   {
     icon: ShieldCheck,
-    text: "A KLL nunca cobra taxa antecipada. Se alguém pedir depósito adiantado em nosso nome, não somos nós.",
+    text: "Processo 100% seguro e transparente, sem taxas antecipadas.",
   },
   {
     icon: HandCoins,
     text: "Taxas a partir de 1,20% ao mês, conforme o seu perfil e o banco parceiro.",
   },
   {
-    icon: MapPin,
-    text: `Endereço fixo, o mesmo há anos: ${fullAddress}.`,
+    icon: Clock,
+    text: "Dinheiro na conta entre 24 e 48 horas após a aprovação do crédito.",
   },
 ];
 
@@ -32,8 +31,9 @@ export default function Hero() {
           </h1>
 
           <p className="measure mt-4 text-lg text-white/85 md:mt-6 md:text-xl">
-            Correspondente bancário em Natal há mais de 20 anos, com mais de 5
-            mil clientes atendidos.
+            Correspondente bancário há mais de 20 anos, com mais de 5 mil
+            clientes atendidos. Atendimento presencial em Natal/RN e online
+            para todo o Brasil.
           </p>
         </div>
 

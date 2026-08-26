@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, Phone, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
-import { primaryPhone, site, whatsappLink } from "@/lib/site";
+import { whatsappLink } from "@/lib/site";
 
 const nav = [
   { href: "/sobre", label: "Sobre nós" },
@@ -25,25 +25,17 @@ export default function Header() {
   }, [pathname]);
 
   const zap = whatsappLink(
-    "Olá! Vim pelo site e gostaria de falar com um consultor da KLL.",
+    "Olá! Vim pelo site e gostaria de falar com um consultor da KLL Promotora.",
     "header",
   );
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Letterhead line. It is on every route because the objection it
-          answers — "isso é golpe?" — arrives on every route. */}
-      <p className="bg-indigo-deep px-3 py-1.5 text-center font-display text-3xs leading-snug font-semibold tracking-[0.02em] text-white/90 uppercase sm:px-8 sm:py-2 sm:text-2xs sm:tracking-[0.14em]">
-        Correspondente bancário
-        <span className="hidden sm:inline"> autorizado pelo Banco Central</span>
-        <span className="tabular-nums"> · CNPJ {site.cnpj}</span>
-      </p>
-
       <div className="border-b border-rule bg-paper/95 backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-5 py-3 sm:px-8">
           <Link
             href="/"
-            className="flex shrink-0 items-center gap-2.5 no-underline"
+            className="mr-4 flex shrink-0 items-center gap-2.5 no-underline lg:mr-12"
             aria-label="KLL Promotora — página inicial"
           >
             <Image
@@ -87,17 +79,6 @@ export default function Header() {
           </nav>
 
           <div className="ml-auto flex items-center gap-2 lg:ml-6">
-            <a
-              href={`tel:${primaryPhone.tel}`}
-              className="flex min-h-11 items-center gap-2 rounded-mark px-2 text-sm font-semibold whitespace-nowrap text-ink no-underline tabular-nums hover:text-indigo sm:px-3"
-            >
-              <Phone className="size-4.5 shrink-0 text-indigo" aria-hidden="true" />
-              <span className="hidden sm:inline">{primaryPhone.label}</span>
-              <span className="sr-only sm:hidden">
-                Ligar para {primaryPhone.label}
-              </span>
-            </a>
-
             <a
               href={zap}
               target="_blank"

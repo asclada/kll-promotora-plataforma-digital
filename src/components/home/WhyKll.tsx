@@ -17,7 +17,7 @@ export default function WhyKll() {
           tone="paper"
           lead="Mais de 5 mil clientes já passaram por aqui. É o que temos para mostrar, e é verdade."
         >
-          Por que escolher a KLL
+          Por que escolher a KLL Promotora
         </SectionHeading>
 
         <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4">

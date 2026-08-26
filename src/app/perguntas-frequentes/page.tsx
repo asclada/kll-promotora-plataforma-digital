@@ -33,7 +33,7 @@ export default function FaqPage() {
 
       <PageHeader
         title="As dúvidas que mais chegam pelo telefone"
-        lead="Estas são, na ordem, as perguntas que a KLL mais ouve. Se a sua não estiver aqui, é só perguntar no WhatsApp."
+        lead="Estas são, na ordem, as perguntas que a KLL Promotora mais ouve. Se a sua não estiver aqui, é só perguntar no WhatsApp."
         trail={[
           { name: "Início", path: "/" },
           { name: "Perguntas frequentes", path: "/perguntas-frequentes" },

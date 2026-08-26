@@ -6,7 +6,7 @@ import { ArrowRight, Lock, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
 import { segments } from "@/lib/content";
-import { site, whatsappLink } from "@/lib/site";
+import { whatsappLink } from "@/lib/site";
 
 /**
  * The hero card. It opens in place — no modal, no route change — and only
@@ -143,7 +143,7 @@ export default function AssistantCard() {
           className="size-8 shrink-0"
         />
         <p className="font-display text-2xs font-semibold tracking-[0.14em] uppercase">
-          Assistente KLL
+          Assistente Virtual — KLL Promotora
         </p>
         {phase !== "closed" && (
           <span className="flex items-center gap-1.5 text-2xs font-semibold tracking-wide text-online uppercase">
@@ -166,10 +166,11 @@ export default function AssistantCard() {
       {phase === "closed" ? (
         <div className="px-4 py-5 sm:px-7 sm:py-8">
           <h2 className="font-display text-xl font-black sm:text-2xl md:text-3xl">
-            Descubra quanto você pode pegar
+            Simule o valor que pode ser liberado para você de forma simples,
+            rápida e gratuita
           </h2>
           <p className="mt-2 text-base text-ink-2 sm:mt-3">
-            Uma pergunta, e um consultor continua no WhatsApp.
+            Converse com o nosso assistente virtual
           </p>
 
           <button
@@ -184,30 +185,17 @@ export default function AssistantCard() {
             />
           </button>
 
-          <p className="mt-4 flex items-start gap-2 text-sm text-ink-2">
-            <Lock className="mt-0.5 size-4 shrink-0 text-indigo" aria-hidden="true" />
-            Converse com nosso assistente. Aqui não pedimos CPF, senha nem
-            depósito antecipado.
+          <p className="mt-6 border-t border-rule pt-4 text-sm font-semibold text-ink-2">
+            Assistente virtual funcionando 24 horas por dia, 7 dias por
+            semana.
           </p>
-
-          <dl className="mt-6 border-t border-rule pt-4 text-sm">
-            {site.hours.map((hour) => (
-              <div
-                key={hour.days}
-                className="flex flex-wrap justify-between gap-x-6 gap-y-0.5 py-1"
-              >
-                <dt className="text-ink-2">{hour.days}</dt>
-                <dd className="font-semibold tabular-nums">{hour.time}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       ) : (
         <div className="animate-sheet">
           <div
             role="log"
             aria-live="polite"
-            aria-label="Conversa com o assistente da KLL"
+            aria-label="Conversa com o assistente da KLL Promotora"
             className="flex min-h-64 flex-col gap-3 bg-paper-2 px-5 py-6 sm:px-6"
           >
             {messages.map((message, i) => (
@@ -274,7 +262,7 @@ export default function AssistantCard() {
                   Continuar no WhatsApp
                 </a>
                 <p className="mt-4 text-xs text-ink-2">
-                  Ao continuar, você concorda que a KLL use seu nome e telefone
+                  Ao continuar, você concorda que a KLL Promotora use seu nome e telefone
                   para retornar o contato e simular seu crédito, conforme a
                   LGPD.{" "}
                   <Link

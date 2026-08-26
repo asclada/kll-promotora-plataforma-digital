@@ -24,8 +24,8 @@ export default function PartnerBanks() {
           <strong className="font-semibold text-ink">
             bancos autorizados pelo Banco Central
           </strong>
-          . A KLL leva o seu caso a todos eles e traz de volta a melhor
-          condição.
+          . A KLL Promotora leva o seu caso a todos eles e traz de volta a
+          melhor condição.
         </h2>
       </div>
 
@@ -50,7 +50,7 @@ export default function PartnerBanks() {
 
       <p className="mx-auto mt-6 w-full max-w-6xl px-5 text-xs text-ink-3 sm:px-8">
         Espaço reservado: os nomes e as marcas dos bancos parceiros entram aqui
-        assim que a KLL enviar a lista oficial.
+        assim que a KLL Promotora enviar a lista oficial.
       </p>
     </section>
   );

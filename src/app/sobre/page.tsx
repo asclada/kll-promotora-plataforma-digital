@@ -9,7 +9,7 @@ import { breadcrumbJsonLd } from "@/lib/seo";
 import { fullAddress, site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Sobre a KLL — Correspondente em Natal RN",
+  title: "Sobre a KLL Promotora — Correspondente em Natal RN",
   description:
     "Empresa familiar de Natal/RN, correspondente bancário há mais de 20 anos e mais de 5 mil clientes atendidos. Conheça a KLL Promotora e fale com um consultor.",
   alternates: { canonical: "/sobre" },
@@ -136,7 +136,7 @@ export default function SobrePage() {
       <CtaBand
         title="Quer falar com a gente antes de decidir?"
         lead="Você pode perguntar o que quiser sem contratar nada. É assim que preferimos começar."
-        message="Olá! Vim pela página Sobre e gostaria de conhecer melhor a KLL."
+        message="Olá! Vim pela página Sobre e gostaria de conhecer melhor a KLL Promotora."
         source="sobre"
       />
     </>

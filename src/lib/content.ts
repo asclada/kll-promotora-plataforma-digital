@@ -52,7 +52,7 @@ export const segments: Segment[] = [
     name: "Aposentado ou pensionista",
     qualifier: "Beneficiários do INSS",
     headline: "Sem consulta ao SPC/Serasa, sem taxa antecipada",
-    body: "O desconto sai direto do benefício, então o banco não precisa consultar seu nome. E o mais importante: a KLL nunca cobra nada antes da liberação do crédito. Se alguém pedir depósito adiantado em nome da KLL, não é a KLL.",
+    body: "O desconto sai direto do benefício, então o banco não precisa consultar seu nome. E o mais importante: a KLL Promotora nunca cobra nada antes da liberação do crédito. Se alguém pedir depósito adiantado em nome da KLL Promotora, não é a KLL Promotora.",
     proof: "Nome negativado não impede a contratação do consignado do INSS.",
     image: {
       src: "https://images.unsplash.com/photo-1478061653917-455ba7f4a541",
@@ -143,7 +143,7 @@ export const services: Service[] = [
     title: "Cartão Consignado",
     metaTitle: "Cartão Consignado em Natal RN",
     metaDescription:
-      "Margem adicional de 5%, sem anuidade e com pagamento mínimo descontado em folha. Cartão consignado para servidores e aposentados em Natal/RN com a KLL.",
+      "Margem adicional de 5%, sem anuidade e com pagamento mínimo descontado em folha. Cartão consignado para servidores e aposentados com a KLL Promotora.",
     outcome: "Uma margem a mais, além da margem do empréstimo.",
     description:
       "Cartão de crédito exclusivo para servidores e aposentados, com margem adicional de 5% e taxas muito inferiores às dos cartões comuns. O pagamento mínimo é descontado em folha.",
@@ -162,7 +162,7 @@ export const services: Service[] = [
   },
 ];
 
-/** "Por que escolher a KLL" — the four differentials from the live site. */
+/** "Por que escolher a KLL Promotora" — the four differentials from the live site. */
 export const differentials = [
   {
     title: "Melhores taxas",
@@ -172,12 +172,12 @@ export const differentials = [
   {
     title: "Liberação rápida",
     description:
-      "Dinheiro na conta em até 24 horas após a aprovação do crédito, quando o banco parceiro conclui a análise.",
+      "Dinheiro na conta entre 24 e 48 horas após a aprovação do crédito, quando o banco parceiro conclui a análise.",
   },
   {
     title: "Total segurança",
     description:
-      "Processo transparente e sem taxas antecipadas. A KLL não cobra nada de você antes da liberação do crédito.",
+      "Processo transparente e sem taxas antecipadas. A KLL Promotora não cobra nada de você antes da liberação do crédito.",
   },
   {
     title: "Atendimento VIP",
@@ -189,11 +189,11 @@ export const differentials = [
 /** FAQ approved by the client on 2026-08-25. Do not edit without approval. */
 export const faq = [
   {
-    q: "Quem pode contratar crédito consignado com a KLL?",
+    q: "Quem pode contratar crédito consignado com a KLL Promotora?",
     a: "Servidores públicos federais, estaduais e municipais (SIAPE), militares das Forças Armadas, aposentados e pensionistas do INSS, e trabalhadores CLT.",
   },
   {
-    q: "A KLL é um banco?",
+    q: "A KLL Promotora é um banco?",
     a: "Não. A KLL Promotora é correspondente bancário autorizado pelo Banco Central — intermediamos propostas junto a bancos parceiros, que são os responsáveis pela análise e concessão do crédito.",
   },
   {
@@ -245,7 +245,7 @@ export const steps = [
   {
     title: "Aprovação e liberação",
     description:
-      "Depois do envio dos documentos e da formalização digital, o banco parceiro aprova e o dinheiro cai na sua conta em até 24 horas.",
+      "Depois do envio dos documentos e da formalização digital, o banco parceiro aprova e o dinheiro cai na sua conta entre 24 e 48 horas.",
     who: "Banco parceiro",
   },
 ];
