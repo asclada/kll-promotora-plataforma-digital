@@ -39,11 +39,11 @@
   --color-rule-ink: #ffffff3d;
   --color-rule-ink-strong: #ffffff66;
 
-  /* Faces: Archivo (signage/forms grotesque, width axis carries the display
-     voice) + Libre Franklin (Franklin Gothic revival, high x-height for
+  /* Faces: PT Serif (print-like institutional serif, carries the display
+     voice) + Public Sans (US federal forms typeface, high x-height for
      readers over 60). */
-  --font-display: var(--font-archivo), "Arial Narrow", system-ui, sans-serif;
-  --font-sans: var(--font-franklin), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-pt-serif), Georgia, serif;
+  --font-sans: var(--font-public-sans), system-ui, -apple-system, sans-serif;
 
   /* Scale — base is 17px, not 16px: the audience includes pensioners. */
   --text-3xs: 0.625rem;
@@ -181,10 +181,9 @@
   h4 {
     font-family: var(--font-display);
     text-wrap: balance;
-    letter-spacing: -0.018em;
-    /* Portuguese runs long — "Correspondente", "Portabilidade" — and the
-       display face is expanded. With lang="pt-BR" the browser breaks these
-       correctly instead of pushing the document wider than the phone. */
+    /* Portuguese runs long — "Correspondente", "Portabilidade". With
+       lang="pt-BR" the browser breaks these correctly instead of pushing
+       the document wider than the phone. */
     hyphens: auto;
   }
 

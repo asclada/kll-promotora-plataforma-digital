@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Libre_Franklin } from "next/font/google";
-import localFont from "next/font/local";
+import { Public_Sans, PT_Serif } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -8,29 +7,25 @@ import { DIRECTION_CONTRACT } from "@/lib/contract";
 import { financialServiceJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-/* Archivo: a signage-and-forms grotesque with a width axis. The expanded width
-   gives the display voice its stamped, pressed-into-paper weight.
-   Self-hosted rather than pulled from Google: shipping both axes costs 90 KB on
-   the critical path, so the file below is instanced at wdth=125 and subsetted
-   to the characters Portuguese actually uses. Weight stays variable (100-900).
-   Result: 28 KB, the expanded voice intact. Licence in src/fonts/Archivo-OFL.txt.
-   Regenerate with:
-     python -m fontTools.varLib.instancer Archivo[wdth,wght].ttf wdth=125 -o exp.ttf
-     python -m fontTools.subset exp.ttf --flavor=woff2 --unicodes=U+0000-00FF,... */
-const archivo = localFont({
-  src: "../fonts/archivo-expanded-var.woff2",
-  weight: "100 900",
-  style: "normal",
-  variable: "--font-archivo",
+/* PT Serif: carries the display voice. A serif built for print-like official
+   documents (it's PT Sans's serif companion, designed for government and
+   institutional typesetting), which fits the "stamped document" world better
+   than a display grotesque. */
+const ptSerif = PT_Serif({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-pt-serif",
   display: "swap",
-  fallback: ["system-ui", "sans-serif"],
 });
 
-/* Libre Franklin: Franklin Gothic revival. Tall x-height and open apertures,
-   which is what a 68-year-old reading a benefit statement actually needs. */
-const franklin = Libre_Franklin({
+/* Public Sans: the US federal government's own forms typeface (USWDS). Tall
+   x-height, open apertures, built for accessibility — what a 68-year-old
+   reading a benefit statement actually needs — and it reinforces the
+   "official, authorised correspondent" story in the body copy itself. */
+const publicSans = Public_Sans({
   subsets: ["latin"],
-  variable: "--font-franklin",
+  weight: ["400", "600", "800"],
+  variable: "--font-public-sans",
   display: "swap",
 });
 
@@ -67,7 +62,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${archivo.variable} ${franklin.variable}`}>
+    <html lang="pt-BR" className={`${ptSerif.variable} ${publicSans.variable}`}>
       <body className="flex min-h-dvh flex-col bg-paper text-ink antialiased">
         <div hidden dangerouslySetInnerHTML={{ __html: DIRECTION_CONTRACT }} />
         <a

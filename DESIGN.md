@@ -21,33 +21,33 @@ colors:
   alerta: "#9a5b00"
 typography:
   display:
-    fontFamily: "Archivo, Arial Narrow, system-ui, sans-serif"
+    fontFamily: "PT Serif, Georgia, serif"
     fontSize: "clamp(1.75rem, 5vw, 4rem)"
-    fontWeight: 900
+    fontWeight: 700
     lineHeight: 1.02
-    letterSpacing: "-0.018em"
+    letterSpacing: "normal"
   headline:
-    fontFamily: "Archivo, Arial Narrow, system-ui, sans-serif"
+    fontFamily: "PT Serif, Georgia, serif"
     fontSize: "2rem"
-    fontWeight: 900
+    fontWeight: 700
     lineHeight: 1.15
-    letterSpacing: "-0.018em"
+    letterSpacing: "normal"
   title:
-    fontFamily: "Archivo, Arial Narrow, system-ui, sans-serif"
+    fontFamily: "PT Serif, Georgia, serif"
     fontSize: "1.375rem"
     fontWeight: 700
     lineHeight: 1.45
-    letterSpacing: "-0.018em"
+    letterSpacing: "normal"
   body:
-    fontFamily: "Libre Franklin, system-ui, -apple-system, sans-serif"
+    fontFamily: "Public Sans, system-ui, -apple-system, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.65
     letterSpacing: "normal"
   label:
-    fontFamily: "Archivo, Arial Narrow, system-ui, sans-serif"
+    fontFamily: "PT Serif, Georgia, serif"
     fontSize: "0.75rem"
-    fontWeight: 600
+    fontWeight: 700
     lineHeight: 1.35
     letterSpacing: "0.14em"
 rounded:
@@ -174,26 +174,32 @@ low-chroma paper ground, with no third accent invented to fill a slot.
 
 ## Typography
 
-**Display Font:** Archivo (with Arial Narrow, system-ui fallback)
-**Body Font:** Libre Franklin (with system-ui, -apple-system fallback)
+**Display Font:** PT Serif (with Georgia, serif fallback)
+**Body Font:** Public Sans (with system-ui, -apple-system fallback)
 
-**Character:** Two grotesques from the signage-and-forms tradition, separated by
-width rather than by genre. Archivo is drawn for highway signs and printed
-forms; the file this project ships is instanced at its
-expanded width (`wdth` 125) and subsetted to Portuguese, so every Archivo
-glyph on the site is expanded and the whole face costs 28 KB. At weight 900
-it reads as something pressed into paper. Libre Franklin is a Franklin Gothic revival with a
-tall x-height and open apertures, which is what a 68-year-old reading a benefit
-statement actually needs. The jump from expanded-black display to normal-regular
-text is large enough that the two never read as the same voice.
+**Character:** Amended 2026-08-25 — the client reviewed a live 3-way comparison
+against the original pairing (Archivo Expanded + Libre Franklin) and chose
+this one. PT Serif is PT Sans's serif companion, drawn for government and
+institutional print typesetting — a face that already looks like it belongs
+on an official form, which suits the "stamped document" world more directly
+than a display grotesque did. Public Sans is the US federal government's own
+forms typeface (USWDS): tall x-height, open apertures, built for
+accessibility — what a 68-year-old reading a benefit statement actually
+needs — carried into the body copy itself instead of just the display voice.
+Google ships PT Serif in two real weights (400, 700) and Public Sans in three
+(400, 600, 800); anything the system requests above that (900/black) resolves
+to the nearest real weight the browser has loaded, not a synthetic one. The
+serif/sans contrast between display and body keeps the two voices distinct on
+its own, so the negative tracking Archivo Expanded needed (`-0.018em`) was
+dropped — a serif doesn't want tightened letterforms.
 
 ### Hierarchy
-- **Display** (900, `clamp(1.75rem, 5vw, 4rem)`, 1.02): page `h1` only. Phones use the single `display-xs` step (1.75rem), proven against the longest real word in the copy — "Correspondente" — at 360px.
-- **Headline** (900, 2–2.5rem, 1.15): section titles, always sitting on a rule.
+- **Display** (700, `clamp(1.75rem, 5vw, 4rem)`, 1.02): page `h1` only. Phones use the single `display-xs` step (1.75rem); re-check wrap on the longest real word in the copy — "Correspondente" — at 360px now that the face has changed (`hyphens: auto` is still the safety net).
+- **Headline** (700, 2–2.5rem, 1.15): section titles, always sitting on a rule.
 - **Title** (700, 1.375–1.625rem, 1.45): sub-section headings, clause titles, card headings.
 - **Body** (400, 1.0625rem base / 1.1875rem in prose contexts, 1.65): all running text. Measure capped at 68ch.
-- **Label** (600, 0.75rem, 0.14em, uppercase): column headings on definition lists, the "quem faz" markers, breadcrumbs and the letterhead strip. Never used as an eyebrow above a heading.
-- **Micro-label** (600, 0.625rem, 0.02em, uppercase): the letterhead strip below 640px only. The single step below Label; nothing in the system goes smaller.
+- **Label** (700, 0.75rem, 0.14em, uppercase): column headings on definition lists, the "quem faz" markers, breadcrumbs and the letterhead strip. Never used as an eyebrow above a heading.
+- **Micro-label** (700, 0.625rem, 0.02em, uppercase): the letterhead strip below 640px only. The single step below Label; nothing in the system goes smaller.
 
 ### Named Rules
 **The No Eyebrow Rule.** A small uppercase label never sits above a heading to introduce it. Labels head their own blocks (a table, a list, a strip); headings carry themselves.
@@ -265,7 +271,7 @@ the page asks for trust.
 ## Components
 
 ### Buttons
-- **Shape:** effectively square, softened to 2px (`rounded-mark`). Label in Archivo semibold or bold; icon and label share a 10px gap.
+- **Shape:** effectively square, softened to 2px (`rounded-mark`). Label in PT Serif bold (the family's only bold weight); icon and label share a 10px gap.
 - **Primary on an indigo band:** yellow plate, ink label, 56px tall (`{components.button-primary-on-ink}`). This is the loudest thing on any page and there is only ever one per viewport.
 - **Primary on paper:** indigo field, white label, 48px tall.
 - **Outline (secondary):** transparent with a 1px `rule-strong` edge; on hover the edge turns indigo and the ground fills with the indigo wash. On an indigo band the outline variant uses a white edge and inverts to a white plate on hover.
@@ -284,7 +290,7 @@ the dark ring reads; on an indigo band the yellow ring reads; on a yellow plate
 the dark ring reads. Never removed, never replaced per-component.
 
 ### Chips / Selectable rows
-- **Style:** a full-width ruled row, not a pill. Name in Archivo bold with a qualifier line beneath in `ink-2`.
+- **Style:** a full-width ruled row, not a pill. Name in PT Serif bold with a qualifier line beneath in `ink-2`.
 - **State:** the selected row is filled with the seal yellow and takes a check icon; unselected rows are transparent with an arrow and take the deeper paper on hover. Every option in a set stays visible at all times — the set is never collapsed behind the selection.
 
 ### Navigation
