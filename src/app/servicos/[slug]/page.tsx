@@ -5,10 +5,9 @@ import { ArrowRight, Check } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 import CtaBand from "@/components/ui/CtaBand";
 import LgpdNotice from "@/components/ui/LgpdNotice";
-import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
 import { documents, services, segments } from "@/lib/content";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import { site, whatsappLink } from "@/lib/site";
+import { site } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -157,15 +156,12 @@ export default async function ServicoPage({ params }: Params) {
               </p>
             </div>
 
-            <a
-              href={whatsappLink(service.whatsapp, `servico-${service.slug}`)}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/?assistente=1"
               className="flex min-h-14 w-full items-center justify-center gap-3 rounded-mark bg-selo px-6 font-display text-lg font-bold text-ink no-underline transition-colors duration-150 hover:bg-selo-deep"
             >
-              <WhatsappGlyph className="size-6 shrink-0" />
               Simular agora
-            </a>
+            </Link>
 
             <div>
               <h2 className="border-b border-rule-strong pb-3 font-display text-2xs font-semibold tracking-[0.14em] text-ink-2 uppercase">

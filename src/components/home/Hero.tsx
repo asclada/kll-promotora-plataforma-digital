@@ -31,9 +31,15 @@ export default function Hero() {
           </h1>
 
           <p className="measure mt-4 text-lg text-white/85 md:mt-6 md:text-xl">
-            Correspondente bancário há mais de 20 anos, com mais de 5 mil
-            clientes atendidos. Atendimento presencial em Natal/RN e online
-            para todo o Brasil.
+            <span className="sm:hidden">
+              Correspondente bancário há mais de 20 anos, com mais de 5 mil
+              clientes atendidos.
+            </span>
+            <span className="hidden sm:inline">
+              Correspondente bancário há mais de 20 anos, com mais de 5 mil
+              clientes atendidos. Atendimento presencial em Natal/RN e online
+              para todo o Brasil.
+            </span>
           </p>
         </div>
 

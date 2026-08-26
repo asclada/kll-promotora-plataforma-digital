@@ -3,10 +3,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import PageHeader from "@/components/ui/PageHeader";
 import CtaBand from "@/components/ui/CtaBand";
-import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
 import { services } from "@/lib/content";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import { whatsappLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Serviços de Crédito Consignado em Natal",
@@ -61,15 +59,12 @@ export default function ServicosPage() {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={whatsappLink(service.whatsapp, `servicos-${service.slug}`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/?assistente=1"
                   className="inline-flex min-h-12 items-center justify-center gap-2.5 rounded-mark bg-indigo px-6 font-display text-base font-semibold text-white no-underline transition-colors duration-150 hover:bg-indigo-deep"
                 >
-                  <WhatsappGlyph className="size-5 shrink-0" />
                   Simular {service.title.toLowerCase()}
-                </a>
+                </Link>
                 <Link
                   href={`/servicos/${service.slug}`}
                   className="group inline-flex min-h-12 items-center justify-center gap-2.5 rounded-mark border border-rule-strong px-6 font-display text-base font-semibold no-underline transition-colors duration-150 hover:border-indigo hover:bg-indigo-tint hover:text-indigo-deep"

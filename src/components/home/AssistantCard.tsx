@@ -7,6 +7,7 @@ import Link from "next/link";
 import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
 import { segments } from "@/lib/content";
 import { whatsappLink } from "@/lib/site";
+import { subscribeAssistantOpen } from "@/lib/assistant-bridge";
 
 /**
  * The hero card. It opens in place — no modal, no route change — and only
@@ -68,10 +69,54 @@ export default function AssistantCard() {
   const reduced = usePrefersReducedMotion();
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const root = useRef<HTMLDivElement>(null);
+  const phaseRef = useRef<Phase>("closed");
+
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   useEffect(() => {
     const pending = timers.current;
     return () => pending.forEach(clearTimeout);
+  }, []);
+
+  /* Any "Simular" button elsewhere on this page opens straight into the same
+     flow as clicking the card's own primary button — see assistant-bridge.ts.
+     A button on another route (e.g. /servicos) can't reach that bridge in
+     time, so it links to `/?assistente=1` instead; this reads that once on
+     mount and then strips it from the URL.
+
+     The `open()` call from the URL trigger is pushed to a macrotask
+     (setTimeout 0) rather than run inline: in dev, StrictMode mounts this
+     effect, tears it down, then mounts it again, all synchronously — and
+     the timers-cleanup effect above would otherwise clear the very timers
+     `open()` just scheduled before they get a chance to fire, leaving the
+     card stuck on the typing indicator forever. Deferring by a tick lets
+     that double-mount settle first. The same-page bridge listener doesn't
+     need this — it only ever fires from a real, later click. */
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const shouldOpen = params.has("assistente");
+    /* Stripping the URL also happens inside the deferred callback, not here:
+       a mutation made directly in the effect body would survive the
+       StrictMode dev double-mount even though its own timer gets cancelled,
+       leaving the second (real) mount with nothing left to react to. */
+    const deferred = setTimeout(() => {
+      if (shouldOpen && phaseRef.current === "closed") {
+        open();
+        const url = new URL(window.location.href);
+        url.searchParams.delete("assistente");
+        window.history.replaceState(null, "", url.toString());
+      }
+    }, 0);
+    const unsubscribe = subscribeAssistantOpen(() => {
+      if (phaseRef.current === "closed") open();
+    });
+    return () => {
+      clearTimeout(deferred);
+      unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const wait = (ms: number, fn: () => void) => {
@@ -164,19 +209,23 @@ export default function AssistantCard() {
       </div>
 
       {phase === "closed" ? (
-        <div className="px-4 py-5 sm:px-7 sm:py-8">
-          <h2 className="font-display text-xl font-black sm:text-2xl md:text-3xl">
+        <div className="px-4 py-4 sm:px-7 sm:py-8">
+          {/* Below sm, the strip above already carries the pitch ("Assistente
+              Virtual — KLL Promotora"); repeating the headline, subtitle and
+              the 24/7 line here just adds scroll before the one button that
+              matters. Full copy comes back at sm and up. */}
+          <h2 className="hidden font-display text-xl font-black sm:block sm:text-2xl md:text-3xl">
             Simule o valor que pode ser liberado para você de forma simples,
             rápida e gratuita
           </h2>
-          <p className="mt-2 text-base text-ink-2 sm:mt-3">
+          <p className="hidden text-base text-ink-2 sm:mt-3 sm:block">
             Converse com o nosso assistente virtual
           </p>
 
           <button
             type="button"
             onClick={open}
-            className="group mt-6 flex min-h-14 w-full items-center justify-between gap-3 rounded-mark bg-selo px-4 text-left font-display text-base font-bold text-balance text-ink transition-colors duration-150 hover:bg-selo-deep sm:mt-7 sm:px-5 sm:text-lg"
+            className="group flex min-h-14 w-full items-center justify-between gap-3 rounded-mark bg-selo px-4 text-left font-display text-base font-bold text-balance text-ink transition-colors duration-150 hover:bg-selo-deep sm:mt-7 sm:px-5 sm:text-lg"
           >
             Simule seu empréstimo agora
             <ArrowRight
@@ -185,7 +234,7 @@ export default function AssistantCard() {
             />
           </button>
 
-          <p className="mt-6 border-t border-rule pt-4 text-sm font-semibold text-ink-2">
+          <p className="mt-6 hidden border-t border-rule pt-4 text-sm font-semibold text-ink-2 sm:block">
             Assistente virtual funcionando 24 horas por dia, 7 dias por
             semana.
           </p>

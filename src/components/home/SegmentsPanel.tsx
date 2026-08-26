@@ -5,9 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { segments } from "@/lib/content";
-import { whatsappLink } from "@/lib/site";
 import SectionHeading from "@/components/ui/SectionHeading";
-import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
+import { requestAssistantOpen } from "@/lib/assistant-bridge";
 
 /**
  * Four regimes, one panel. Every row stays visible at all times — the reader
@@ -138,15 +137,14 @@ export default function SegmentsPanel() {
             {segment.proof}
           </p>
 
-          <a
-            href={whatsappLink(segment.whatsapp, `segmento-${segment.slug}`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex min-h-12 items-center gap-2.5 rounded-mark bg-indigo px-6 py-3 font-display text-base font-semibold text-white no-underline transition-colors duration-150 hover:bg-indigo-deep"
+          <button
+            type="button"
+            onClick={() => requestAssistantOpen()}
+            className="mt-6 inline-flex min-h-12 items-center gap-2.5 rounded-mark bg-indigo px-6 py-3 font-display text-base font-semibold text-white transition-colors duration-150 hover:bg-indigo-deep"
           >
-            <WhatsappGlyph className="size-5 shrink-0" />
             Simular como {segment.name}
-          </a>
+            <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </section>
