@@ -29,8 +29,8 @@ export const segments: Segment[] = [
     body: "A modalidade mais nova do mercado. O desconto vai direto na folha de pagamento da empresa, e é isso que derruba a taxa: você paga muito menos do que pagaria no cheque especial ou no cartão de crédito.",
     proof: "Liberação rápida — normalmente entre 24 e 48 horas após a aprovação.",
     image: {
-      src: "https://images.unsplash.com/photo-1543269865-cbf427effbad",
-      alt: "Quatro pessoas jovens conversando em volta de uma mesa de madeira, uma delas segurando o celular.",
+      src: "/images/consignado-clt.jpg",
+      alt: "Mulher sorridente usando headset atende clientes em um escritório, com colegas de trabalho ao fundo.",
     },
     whatsapp: "Olá! Sou trabalhador CLT e quero simular um empréstimo consignado.",
   },
@@ -40,10 +40,10 @@ export const segments: Segment[] = [
     qualifier: "Federal, estadual ou municipal (SIAPE)",
     headline: "Quem conhece a margem do servidor negocia melhor",
     body: "Atendemos servidores federais, estaduais e municipais, ativos e inativos. Cada órgão tem uma regra de margem e um conjunto de bancos conveniados — conhecer essa tabela é o que separa uma proposta boa de uma proposta comum.",
-    proof: "Prazos de até 96 meses, conforme o convênio do seu órgão.",
+    proof: "Prazos de até 120 meses, conforme o convênio do seu órgão.",
     image: {
-      src: "https://images.unsplash.com/photo-1590650153855-d9e808231d41",
-      alt: "Servidora pública de pé ao lado de um notebook aberto sobre um balcão de atendimento.",
+      src: "/images/servidor-publico.jpg",
+      alt: "Duas profissionais analisando painéis com plantas e anotações em um escritório.",
     },
     whatsapp: "Olá! Sou servidor público e quero simular um empréstimo consignado.",
   },
@@ -52,11 +52,11 @@ export const segments: Segment[] = [
     name: "Aposentado ou pensionista",
     qualifier: "Beneficiários do INSS",
     headline: "Sem consulta ao SPC/Serasa, sem taxa antecipada",
-    body: "O desconto sai direto do benefício, então o banco não precisa consultar seu nome. E o mais importante: a KLL Promotora nunca cobra nada antes da liberação do crédito. Se alguém pedir depósito adiantado em nome da KLL Promotora, não é a KLL Promotora.",
+    body: "O desconto sai direto do benefício, então o banco não precisa consultar seu nome. É a modalidade com as menores taxas do mercado para quem recebe o benefício do INSS.",
     proof: "Nome negativado não impede a contratação do consignado do INSS.",
     image: {
-      src: "https://images.unsplash.com/photo-1478061653917-455ba7f4a541",
-      alt: "Casal de idosos abraçado ao filho adulto, os três sorrindo ao ar livre.",
+      src: "/images/aposentado-pensionista.jpg",
+      alt: "Casal de idosos sorridente, sentados juntos em casa.",
     },
     whatsapp: "Olá! Sou aposentado/pensionista do INSS e quero simular um empréstimo consignado.",
   },
@@ -66,10 +66,10 @@ export const segments: Segment[] = [
     qualifier: "Exército, Marinha e Aeronáutica",
     headline: "Condições próprias do regime militar",
     body: "Militares da ativa, da reserva e reformados têm regras de consignação diferentes das do servidor civil, com prazos mais longos disponíveis em parte dos bancos parceiros. Analisamos a sua ficha antes de indicar qualquer proposta.",
-    proof: "Atendimento nacional — o processo é feito por WhatsApp, de onde você estiver.",
+    proof: "Atendimento nacional — o processo é feito online, de onde você estiver.",
     image: {
-      src: "https://images.unsplash.com/photo-1609220136736-443140cffec6",
-      alt: "Pai carregando duas crianças no colo em frente ao portão de casa, todos sorrindo.",
+      src: "/images/militar-forcas-armadas.jpg",
+      alt: "Fileira de militares em uniforme de gala perfilados com espadas em um estádio, à noite.",
     },
     whatsapp: "Olá! Sou militar das Forças Armadas e quero simular um empréstimo consignado.",
   },
@@ -97,19 +97,19 @@ export const services: Service[] = [
     title: "Crédito Consignado",
     metaTitle: "Crédito Consignado em Natal RN",
     metaDescription:
-      "O dinheiro mais barato para quem tem folha de pagamento. Taxa a partir de 1,20% a.m., prazo até 96 meses e sem consulta ao SPC. Simule em Natal/RN agora.",
+      "O dinheiro mais barato para quem tem folha de pagamento. Taxa a partir de 1,20% a.m., prazo até 120 meses e sem consulta ao SPC. Simule em Natal/RN agora.",
     outcome: "O dinheiro mais barato disponível para quem tem folha de pagamento.",
     description:
       "A modalidade mais barata do mercado. O desconto é feito diretamente na folha de pagamento ou no benefício, o que reduz o risco para o banco — e é o risco menor que derruba a sua taxa.",
     conditions: [
       { label: "Taxa", value: "a partir de 1,20% a.m." },
-      { label: "Prazo", value: "até 96 meses" },
+      { label: "Prazo", value: "até 120 meses" },
       { label: "Consulta SPC/Serasa", value: "não há" },
       { label: "Garantia ou fiador", value: "não é exigido" },
     ],
     highlights: [
       "Taxas a partir de 1,20% a.m.",
-      "Prazos de até 96 meses",
+      "Prazos de até 120 meses",
       "Sem consulta ao SPC/Serasa",
       "Liberação rápida",
     ],
@@ -227,7 +227,7 @@ export const steps = [
   {
     title: "Solicitação",
     description:
-      "Você fala com a gente pelo WhatsApp ou pelo formulário. É rápido e sem compromisso — nesta etapa nada é contratado.",
+      "Você fala com a gente pelo WhatsApp ou pelo nosso assistente virtual. É rápido e sem compromisso — nesta etapa nada é contratado.",
     who: "Você",
   },
   {
