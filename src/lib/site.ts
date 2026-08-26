@@ -23,8 +23,11 @@ export const site = {
   ],
   email: "contato@kllpromotora.com.br",
   hours: [
-    { days: "Segunda a sexta", time: "08:30 às 18h" },
-    { days: "Sábado", time: "09h às 14h" },
+    { days: "Atendimento no WhatsApp", time: "Segunda a sexta, 09h às 17h" },
+    {
+      days: "Atendimento com nosso assistente virtual",
+      time: "24 horas por dia, 7 dias por semana",
+    },
   ],
   geo: { lat: -5.7835737, lng: -35.2059489 },
 } as const;
