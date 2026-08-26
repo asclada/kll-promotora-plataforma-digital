@@ -21,3 +21,7 @@ Thumbs.db
 
 .vercel
 .env*
+
+# Specs internas das próximas fases do projeto (planejamento, não código de
+# produção) — referência entre sessões, nunca vai para o repositório público.
+/fases-projeto/
