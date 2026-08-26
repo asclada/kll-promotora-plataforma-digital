@@ -256,18 +256,36 @@ export const documents = [
   "Comprovante de residência",
 ];
 
-/**
- * PENDING: the client has not sent the list of partner banks yet.
- * These are neutral placeholders, deliberately not real bank names.
- * Replace the array with the real institutions when the list arrives.
- */
-export const partnerBanksPending = [
-  "Banco parceiro 01",
-  "Banco parceiro 02",
-  "Banco parceiro 03",
-  "Banco parceiro 04",
-  "Banco parceiro 05",
-  "Banco parceiro 06",
-  "Banco parceiro 07",
-  "Banco parceiro 08",
+export type PartnerBank = {
+  name: string;
+  /** Path to the official logo. `null` when the official mark is icon-only
+   *  and doesn't carry the name — see `icon` below for that case. */
+  logo: string | null;
+  /** Icon-only mark, paired with the name as plain text in the UI. Only
+   *  set when `logo` is null. */
+  icon?: string;
+  /** Extra inset for logos whose own artwork has little internal
+   *  whitespace and otherwise touches the plate's edges. */
+  pad?: string;
+  /** Scale-up factor for logos that already fill the plate's full height
+   *  at their natural crop (no `pad` room left to reduce) but still read
+   *  small next to the others — e.g. a squarer mark that ends up narrow
+   *  once object-contain pins it to the plate's height. */
+  scale?: number;
+};
+
+/** Real partner banks, confirmed by the client on 2026-08-26. Logos sourced
+ *  from each institution's own site or Wikimedia Commons (public-domain
+ *  wordmarks). V8 Digital's official mark is icon-only with no legible name
+ *  in it, so it's paired with the name as text instead of being cropped
+ *  from the mark. */
+export const partnerBanks: PartnerBank[] = [
+  { name: "Banco Dígio", logo: "/images/bancos/digio.svg", pad: "py-2" },
+  { name: "Banco Daycoval", logo: "/images/bancos/daycoval.png" },
+  { name: "Banrisul", logo: "/images/bancos/banrisul.svg" },
+  { name: "C6 Bank", logo: "/images/bancos/c6-bank.svg" },
+  { name: "Banco BMG", logo: "/images/bancos/bmg.png", scale: 1.2 },
+  { name: "Banco Safra", logo: "/images/bancos/safra.svg", pad: "p-3" },
+  { name: "VCTex", logo: "/images/bancos/vctex.png" },
+  { name: "V8 Digital", logo: null, icon: "/images/bancos/v8.webp" },
 ];

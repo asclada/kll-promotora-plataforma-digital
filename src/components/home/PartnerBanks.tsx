@@ -1,14 +1,14 @@
-import { partnerBanksPending } from "@/lib/content";
+import Image from "next/image";
+import { partnerBanks } from "@/lib/content";
 
 /**
- * PENDING CONTENT — the client has not sent the partner bank list yet.
- * The strip, its motion and its layout are final; only the plates are
- * placeholders, and they are marked as such on screen rather than filled
- * with invented bank names. Replace `partnerBanksPending` in lib/content.ts
- * with the real institutions (name + logo) when the list arrives.
+ * The trust strip. Every plate carries a real, named partner bank — see
+ * `partnerBanks` in lib/content.ts for sourcing notes. The list is
+ * duplicated once so the marquee loops seamlessly; the second copy is
+ * `aria-hidden` since it's a visual repeat, not new information.
  */
 export default function PartnerBanks() {
-  const plates = [...partnerBanksPending, ...partnerBanksPending];
+  const plates = [...partnerBanks, ...partnerBanks];
 
   return (
     <section
@@ -30,28 +30,53 @@ export default function PartnerBanks() {
       </div>
 
       <div className="mt-8 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_5%,black_95%,transparent)]">
-        <ul
-          className="animate-marquee flex w-max gap-3 hover:[animation-play-state:paused]"
-          data-placeholder="partner-bank-logos"
-        >
-          {plates.map((name, i) => (
+        <ul className="animate-marquee flex w-max gap-3 hover:[animation-play-state:paused]">
+          {plates.map((bank, i) => (
             <li
-              key={`${name}-${i}`}
-              aria-hidden={i >= partnerBanksPending.length}
-              className="flex h-16 w-52 shrink-0 items-center justify-center border border-dashed border-rule-strong bg-paper px-4"
+              key={`${bank.name}-${i}`}
+              aria-hidden={i >= partnerBanks.length}
+              className="flex h-16 w-52 shrink-0 items-center justify-center border border-rule-strong bg-paper px-6"
             >
-              <span className="font-display text-sm font-semibold tracking-wide text-ink-3 tabular-nums">
-                {name}
-              </span>
+              {bank.logo ? (
+                /* The inset has to live on a normal-flow wrapper, not on the
+                   `relative` element itself: an absolutely-positioned `fill`
+                   image fills its parent's padding box regardless of that
+                   parent's own padding, so padding put directly on the
+                   `relative` div is a no-op. */
+                <div className={`h-full w-full ${bank.pad ?? ""}`}>
+                  <div
+                    className="relative h-full w-full"
+                    style={
+                      bank.scale ? { transform: `scale(${bank.scale})` } : undefined
+                    }
+                  >
+                    <Image
+                      src={bank.logo}
+                      alt={bank.name}
+                      fill
+                      sizes="208px"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={bank.icon!}
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="shrink-0"
+                  />
+                  <span className="font-display text-base font-semibold text-ink-3">
+                    {bank.name}
+                  </span>
+                </div>
+              )}
             </li>
           ))}
         </ul>
       </div>
-
-      <p className="mx-auto mt-6 w-full max-w-6xl px-5 text-xs text-ink-3 sm:px-8">
-        Espaço reservado: os nomes e as marcas dos bancos parceiros entram aqui
-        assim que a KLL Promotora enviar a lista oficial.
-      </p>
     </section>
   );
 }

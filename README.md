@@ -103,8 +103,9 @@ presentation).
   (performance/accessibility/best-practices/SEO) on the homepage and 90+ on
   every other route, minimum 4.5:1 contrast measured (not estimated) across
   all text, zero console errors, zero flags from Impeccable's automated
-  anti-pattern detector. Real open item: partner bank names and logos
-  (visible placeholder on the page until the client sends the list).
+  anti-pattern detector. Partner bank logos (Dígio, Daycoval, Banrisul, C6
+  Bank, BMG, Safra, VCTex, V8 Fintech) added once the client confirmed the
+  list, sourced from each institution's own site or Wikimedia Commons.
 - **Phase 2 — AI widget (real integration):** not started. What exists today
   is only the frontend mock described above
   (`src/components/home/AssistantCard.tsx`), with the integration point
@@ -130,8 +131,8 @@ All business copy is centralized — nothing scattered across components:
 - **`src/lib/site.ts`** — NAP (name, address, phones, e-mail, hours, CNPJ)
   and the `whatsappLink()` helper.
 - **`src/lib/content.ts`** — segments, services, differentiators, FAQ,
-  process steps, required documents, and the **pending** partner-bank list
-  (`partnerBanksPending`).
+  process steps, required documents, and the partner-bank list
+  (`partnerBanks`).
 - **`src/lib/seo.ts`** — JSON-LD (`FinancialService`, `FAQPage`,
   `BreadcrumbList`).
 - **`DESIGN.md`** — the full visual system (palette, type, shapes,

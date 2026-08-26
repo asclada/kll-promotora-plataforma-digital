@@ -103,9 +103,10 @@ no cliente, só apresentação de conteúdo real).
   93/100/100/100 (performance/acessibilidade/boas práticas/SEO) na Home e
   90+ nas demais rotas, contraste mínimo 4.5:1 medido (não estimado) em todo
   texto, zero erros de console, detector automático de anti-padrões da
-  Impeccable sem nenhum apontamento. Pendência real de conteúdo: os nomes e
-  logos dos bancos parceiros (placeholder visível na tela até o cliente
-  enviar a lista).
+  Impeccable sem nenhum apontamento. Logos dos bancos parceiros (Dígio,
+  Daycoval, Banrisul, C6 Bank, BMG, Safra, VCTex, V8 Fintech) adicionadas
+  depois que o cliente confirmou a lista, com fonte no site oficial de cada
+  instituição ou no Wikimedia Commons.
 - **Fase 2 — Widget de IA (integração real):** não iniciada. O que existe
   hoje é só o mock de frontend descrito acima
   (`src/components/home/AssistantCard.tsx`), com o ponto de integração já
@@ -131,8 +132,7 @@ componentes:
 - **`src/lib/site.ts`** — NAP (nome, endereço, telefones, e-mail, horário,
   CNPJ) e o helper `whatsappLink()`.
 - **`src/lib/content.ts`** — segmentos, serviços, diferenciais, FAQ, etapas,
-  documentos e a lista **pendente** de bancos parceiros
-  (`partnerBanksPending`).
+  documentos e a lista de bancos parceiros (`partnerBanks`).
 - **`src/lib/seo.ts`** — JSON-LD (`FinancialService`, `FAQPage`,
   `BreadcrumbList`).
 - **`DESIGN.md`** — sistema visual completo (paleta, tipografia, formas,
