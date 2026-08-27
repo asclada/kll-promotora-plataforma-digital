@@ -120,10 +120,26 @@ no cliente, só apresentação de conteúdo real).
   — testado com os 2 usuários reais. Editar o funil pela UI (status, valor
   negociado, banco, observações) e qualquer lógica do agente de IA ficam
   deliberadamente fora do escopo desta fase.
-- **Fase 3 — Widget de IA (integração real):** não iniciada. O que existe
-  hoje é só o mock de frontend descrito acima
-  (`src/components/home/AssistantCard.tsx`), com o ponto de integração já
-  marcado no código.
+- **Fase 3 — Agente de triagem (n8n):** concluída, em
+  [`kll-promotora-n8n-agent`](https://github.com/asclada/kll-promotora-n8n-agent)
+  (repositório privado). Fluxo n8n adaptado do padrão já usado em outro
+  agente de triagem, porém simplificado — coleta 4 dados (nome, tipo de
+  vínculo, CPF, telefone) em até 5 turnos de conversa e grava direto na
+  tabela `leads` do CRM (Fase 2), com guard estrutural no banco: só marca
+  o lead como `aguardando_contato` quando CPF e telefone estão presentes
+  e em formato válido. Testado manualmente via chamadas diretas ao
+  webhook (duas conversas completas simuladas, incluindo nova tentativa
+  após CPF em formato inválido). Ainda não conectado ao site — essa
+  ligação é a Fase 4.
+- **Fase 4 — Widget + integração:** não iniciada. O widget de chat
+  (`src/components/home/AssistantCard.tsx`) já existe desde a Fase 1,
+  como mock de frontend com roteiro fixo; falta só a integração real —
+  ligar esse widget ao webhook do agente da Fase 3, e confirmar que os
+  leads aparecem corretamente no CRM da Fase 2 (widget → n8n → CRM →
+  Supabase, ponta a ponta). Escopo detalhado ainda não definido.
+- **Fase 5 — Deploy + QA:** não iniciada. Domínio de produção, variáveis
+  de ambiente e checklist final de portfólio. Escopo detalhado ainda não
+  definido.
 
 ## Como rodar localmente
 

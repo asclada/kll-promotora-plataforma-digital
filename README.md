@@ -118,10 +118,25 @@ presentation).
   with both real users. Editing the sales funnel from the UI (status,
   negotiated value, bank, attendant notes) and any AI-agent logic are
   explicitly out of scope for this phase.
-- **Phase 3 — AI widget (real integration):** not started. What exists today
-  is only the frontend mock described above
-  (`src/components/home/AssistantCard.tsx`), with the integration point
-  already marked in the code.
+- **Phase 3 — Triage agent (n8n):** done, in
+  [`kll-promotora-n8n-agent`](https://github.com/asclada/kll-promotora-n8n-agent)
+  (private repo). n8n workflow adapted from a pattern already proven on
+  another triage agent, but simplified — collects 4 fields (full name,
+  employment type, CPF, phone) over up to 5 conversation turns and writes
+  straight to the CRM's (Phase 2) `leads` table, with a database-level
+  guard: a lead is only marked `aguardando_contato` once CPF and phone are
+  present and correctly formatted. Manually tested via direct webhook
+  calls (two full simulated conversations, including a retry after an
+  invalid CPF format). Not yet wired to the site — that's Phase 4.
+- **Phase 4 — Widget + integration:** not started. The chat widget
+  (`src/components/home/AssistantCard.tsx`) has existed since Phase 1 as a
+  frontend mock with a fixed script; what's missing is the real
+  integration — wiring that widget to the Phase 3 agent's webhook, and
+  confirming leads show up correctly in the Phase 2 CRM (widget → n8n →
+  CRM → Supabase, end to end). Detailed scope not yet defined.
+- **Phase 5 — Deploy + QA:** not started. Production domain, environment
+  variables, and a final portfolio checklist. Detailed scope not yet
+  defined.
 
 ## Running locally
 
