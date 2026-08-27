@@ -22,15 +22,18 @@ The full solution has three parts:
 
 1. **This website** — a redesigned, faster public presence with real content
    and institutional trust signals (this repository). **Done.**
-2. **An AI lead-qualification widget** — the hero card already exists in
+2. **A CRM** — a separate product ([`kll-promotora-crm`](https://github.com/asclada/kll-promotora-crm),
+   private repo) for the father and son to review qualified leads, following
+   the same pattern as the CRM already built for another client. **Schema
+   and authenticated panel skeleton done** (login, lead list, archived
+   list, read-only triage detail); editing the sales funnel from the UI
+   (status, negotiated value, bank, notes) is a deliberate fast-follow, not
+   built yet.
+3. **An AI lead-qualification widget** — the hero card already exists in
    this UI and turns into a chat on click, but today it's a **frontend
-   mock** (fixed script, no real AI call). The real integration (likely via
-   an n8n workflow, the pattern already used on other Vibe Digital projects)
-   is the next phase. **Not started.**
-3. **A CRM** — a separate product for the father and son to review qualified
-   leads and conversation history, following the same pattern as the CRM
-   already built for another client (its own repository, outside this one).
-   **Not started.**
+   mock** (fixed script, no real AI call). The real integration (via an n8n
+   workflow, writing into the CRM's database) is the next phase. **Not
+   started.**
 
 **This repository is the website only.** No database, no API route, no real
 AI integration — the only "capture" today is an
@@ -106,11 +109,19 @@ presentation).
   anti-pattern detector. Partner bank logos (Dígio, Daycoval, Banrisul, C6
   Bank, BMG, Safra, VCTex, V8 Fintech) added once the client confirmed the
   list, sourced from each institution's own site or Wikimedia Commons.
-- **Phase 2 — AI widget (real integration):** not started. What exists today
+- **Phase 2 — CRM (schema + panel skeleton):** done, in
+  [`kll-promotora-crm`](https://github.com/asclada/kll-promotora-crm)
+  (private repo). Supabase schema applied (`leads`/`profiles`, RLS,
+  explicit grants, the triage-completion guard constraint) and an
+  authenticated Next.js panel working end-to-end — login, lead list,
+  archived list, read-only triage detail with an archive action — tested
+  with both real users. Editing the sales funnel from the UI (status,
+  negotiated value, bank, attendant notes) and any AI-agent logic are
+  explicitly out of scope for this phase.
+- **Phase 3 — AI widget (real integration):** not started. What exists today
   is only the frontend mock described above
   (`src/components/home/AssistantCard.tsx`), with the integration point
   already marked in the code.
-- **Phase 3 — CRM:** not started.
 
 ## Running locally
 

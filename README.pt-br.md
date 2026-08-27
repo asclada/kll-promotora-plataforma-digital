@@ -22,15 +22,19 @@ A solução completa tem três partes:
 
 1. **Este site** — presença pública redesenhada, mais rápida, com conteúdo
    real e sinais de legitimidade institucional (este repositório). **Concluído.**
-2. **Um widget de qualificação de leads por IA** — o card do hero já existe
+2. **Um CRM** — produto separado
+   ([`kll-promotora-crm`](https://github.com/asclada/kll-promotora-crm),
+   repositório privado) para o pai e o filho acompanharem os leads
+   qualificados, nos mesmos moldes do CRM já construído para outro cliente.
+   **Schema e esqueleto do painel autenticado concluídos** (login, lista de
+   clientes, arquivados, detalhe read-only da triagem); editar o funil de
+   vendas pela UI (status, valor negociado, banco, observações) é um
+   refinamento deliberadamente deixado pra depois, ainda não construído.
+3. **Um widget de qualificação de leads por IA** — o card do hero já existe
    nesta interface e se transforma num chat ao ser clicado, mas hoje é um
    **mock de frontend** (roteiro fixo, sem chamada de IA real). A integração
-   de verdade (provavelmente via workflow n8n, padrão já usado em outros
-   projetos da Vibe Digital) é a próxima fase. **Não iniciada.**
-3. **Um CRM** — produto separado para o pai e o filho acompanharem os leads
-   qualificados e o histórico de conversas, nos mesmos moldes do CRM já
-   construído para outro cliente (repositório próprio, fora deste). **Não
-   iniciada.**
+   de verdade (via workflow n8n, gravando no banco do CRM) é a próxima fase.
+   **Não iniciada.**
 
 **Este repositório é só o site.** Não tem banco de dados, não tem rota de API,
 não tem nenhuma integração de IA real — a única "captação" hoje é um link
@@ -107,11 +111,19 @@ no cliente, só apresentação de conteúdo real).
   Daycoval, Banrisul, C6 Bank, BMG, Safra, VCTex, V8 Fintech) adicionadas
   depois que o cliente confirmou a lista, com fonte no site oficial de cada
   instituição ou no Wikimedia Commons.
-- **Fase 2 — Widget de IA (integração real):** não iniciada. O que existe
+- **Fase 2 — CRM (schema + esqueleto do painel):** concluída, em
+  [`kll-promotora-crm`](https://github.com/asclada/kll-promotora-crm)
+  (repositório privado). Schema Supabase aplicado (`leads`/`profiles`,
+  RLS, grants explícitos, constraint de conclusão da triagem) e painel
+  Next.js autenticado funcionando ponta a ponta — login, lista de
+  clientes, arquivados, detalhe read-only da triagem com ação de arquivar
+  — testado com os 2 usuários reais. Editar o funil pela UI (status, valor
+  negociado, banco, observações) e qualquer lógica do agente de IA ficam
+  deliberadamente fora do escopo desta fase.
+- **Fase 3 — Widget de IA (integração real):** não iniciada. O que existe
   hoje é só o mock de frontend descrito acima
   (`src/components/home/AssistantCard.tsx`), com o ponto de integração já
   marcado no código.
-- **Fase 3 — CRM:** não iniciada.
 
 ## Como rodar localmente
 
