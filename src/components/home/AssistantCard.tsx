@@ -20,6 +20,7 @@ type Message = {
   id: string;
   from: "agent" | "user";
   text: string;
+  isError?: boolean;
 };
 
 type Phase = "closed" | "chatting" | "done";
@@ -49,6 +50,28 @@ const bubbleDelays = [
   "[animation-delay:280ms]",
 ];
 
+/* The agent sometimes asks the lead to pick from a numbered list inside one
+   flat sentence ("...em qual dessas situações você se encaixa? 1. CLT 2.
+   Servidor público..."). There's no structured "options" field in the n8n
+   webhook contract — it's plain text — so this splits that shape back into
+   an intro line plus real list items for readability, without needing an
+   agent-side change. Returns null for ordinary text (including a message
+   that just happens to contain "1." once), so it never touches anything
+   that isn't actually a sequential numbered list. */
+function parseOptionsList(text: string): { intro: string; items: string[] } | null {
+  const markers = [...text.matchAll(/(\d+)\.\s+/g)];
+  if (markers.length < 2) return null;
+  if (!markers.every((marker, i) => Number(marker[1]) === i + 1)) return null;
+
+  const intro = text.slice(0, markers[0].index).trim();
+  const items = markers.map((marker, i) => {
+    const start = marker.index! + marker[0].length;
+    const end = i + 1 < markers.length ? markers[i + 1].index! : text.length;
+    return text.slice(start, end).trim();
+  });
+  return { intro, items };
+}
+
 function getOrCreateConversaId(): string {
   const existing = window.sessionStorage.getItem(CONVERSA_ID_KEY);
   if (existing) return existing;
@@ -68,6 +91,7 @@ export default function AssistantCard() {
   const logEndRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<Phase>("closed");
   const conversaIdRef = useRef<string | null>(null);
+  const [pendingRetry, setPendingRetry] = useState<string | null>(null);
 
   useEffect(() => {
     phaseRef.current = phase;
@@ -79,7 +103,16 @@ export default function AssistantCard() {
   }, []);
 
   useEffect(() => {
-    logEndRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    /* `block: "nearest"` matters here: the default ("start") scrolls the
+       whole page so this sentinel lands at the top of the viewport, which
+       yanks the page down past the card itself on every new message —
+       exactly the "conversa some da tela" bug. "nearest" only scrolls the
+       log's own overflow container, the minimum needed to reveal the
+       sentinel, and leaves the page scroll position alone. */
+    logEndRef.current?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "nearest",
+    });
   }, [messages, typing, reduced]);
 
   /* Any "Simular" button elsewhere on this page opens straight into the same
@@ -144,6 +177,7 @@ export default function AssistantCard() {
       }
 
       setTyping(false);
+      setPendingRetry(null);
       const agentMessages: Message[] = data.respostas
         .filter((text): text is string => typeof text === "string")
         .map((text, i) => ({ id: `a-${Date.now()}-${i}`, from: "agent", text }));
@@ -154,11 +188,18 @@ export default function AssistantCard() {
       }
     } catch {
       setTyping(false);
+      setPendingRetry(mensagem);
       setMessages((prev) => [
         ...prev,
-        { id: `err-${Date.now()}`, from: "agent", text: NETWORK_ERROR_MESSAGE },
+        { id: `err-${Date.now()}`, from: "agent", text: NETWORK_ERROR_MESSAGE, isError: true },
       ]);
     }
+  }
+
+  function retry() {
+    const conversaId = conversaIdRef.current;
+    if (!pendingRetry || !conversaId || typing) return;
+    void sendToAgent(conversaId, pendingRetry);
   }
 
   function open() {
@@ -183,6 +224,7 @@ export default function AssistantCard() {
     setMessages([]);
     setInput("");
     setTyping(false);
+    setPendingRetry(null);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -271,20 +313,52 @@ export default function AssistantCard() {
             aria-label="Conversa com o assistente da KLL Promotora"
             className="flex max-h-96 min-h-64 flex-col gap-3 overflow-y-auto bg-paper-2 px-5 py-6 sm:px-6"
           >
-            {messages.map((message, i) => (
-              <p
-                key={message.id}
-                className={`animate-bubble max-w-[85%] px-4 py-3 text-base ${
-                  bubbleDelays[Math.min(i, bubbleDelays.length - 1)]
-                } ${
-                  message.from === "agent"
-                    ? "self-start rounded-mark bg-sheet text-ink shadow-sheet"
-                    : "self-end rounded-mark bg-indigo font-semibold text-white"
-                }`}
-              >
-                {message.text}
-              </p>
-            ))}
+            {messages.map((message, i) => {
+              const list = message.from === "agent" ? parseOptionsList(message.text) : null;
+              const showRetry =
+                message.isError && pendingRetry !== null && i === messages.length - 1;
+              return (
+                <div
+                  key={message.id}
+                  className={`animate-bubble max-w-[85%] px-4 py-3 text-sm ${
+                    bubbleDelays[Math.min(i, bubbleDelays.length - 1)]
+                  } ${
+                    message.from === "agent"
+                      ? "self-start rounded-mark bg-sheet text-ink shadow-sheet"
+                      : "self-end rounded-mark bg-indigo font-semibold text-white"
+                  }`}
+                >
+                  {list ? (
+                    <>
+                      {list.intro && <p>{list.intro}</p>}
+                      <ol className="mt-2 flex flex-col gap-1.5">
+                        {list.items.map((item, itemIndex) => (
+                          <li key={itemIndex} className="flex gap-2">
+                            <span className="font-semibold text-indigo">
+                              {itemIndex + 1}.
+                            </span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </>
+                  ) : (
+                    message.text
+                  )}
+                  {showRetry && (
+                    <button
+                      type="button"
+                      onClick={retry}
+                      disabled={typing}
+                      className="mt-2 flex items-center gap-1.5 font-semibold text-indigo hover:text-indigo-deep disabled:opacity-50"
+                    >
+                      <RotateCcw className="size-3.5" aria-hidden="true" />
+                      Tentar novamente
+                    </button>
+                  )}
+                </div>
+              );
+            })}
 
             {typing && (
               <p className="flex w-16 items-center justify-center gap-1.5 self-start rounded-mark bg-sheet px-4 py-4 shadow-sheet">
