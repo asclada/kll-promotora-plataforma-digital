@@ -145,16 +145,27 @@ no cliente, só apresentação de conteúdo real).
   timeout real do Gemini tratado sem quebrar a UI. Editar o funil de
   vendas pela UI do CRM continua sendo o fast-follow pendente da Fase 2,
   sem mudança.
-- **Fase 5 — Deploy + QA:** em andamento. `N8N_WEBHOOK_URL` já está
-  configurada no projeto Vercel do site (produção + preview), e o CRM
-  (`kll-promotora-crm`) ganhou seu primeiro deploy em
-  `kll-promotora-crm.vercel.app`, com as próprias env vars do Supabase —
-  verificado ponta a ponta (widget → agente → CRM) contra esses deploys
-  reais, não só em dev local. Os dois ainda estão em URL `.vercel.app`.
-  Falta: apontar o próprio `kllpromotora.com.br` para este site (no lugar
-  do site atual) e `painel.kllpromotora.com.br` para o CRM, além de um
-  checklist final de portfólio. Escopo detalhado desse cutover ainda não
-  definido.
+- **Fase 5 — Deploy + QA (última fase):** concluída. Os três domínios de
+  produção — `kllpromotora.com.br`, `www.kllpromotora.com.br` e
+  `painel.kllpromotora.com.br` — apontam para os projetos certos na
+  Vercel (site novo e CRM), todos com SSL válido. Descoberta no processo:
+  a documentação anterior deste README descrevia o site em produção como
+  "hospedado na Netlify" — isso nunca foi verdade; o domínio raiz já
+  apontava para a Vercel desde a época em que o site era feito no
+  Builder.io (stack anterior a esta). O cutover em si aconteceu majoritariamente
+  do lado da Vercel (reatribuição de dono do domínio), mais dois registros
+  `CNAME` dedicados na Cloudflare (`www` e `painel`) com o proxy da
+  Cloudflare desligado (`DNS only`) nos três domínios — o que também
+  corrigiu uma divergência em que a Cloudflare injetava seu próprio
+  `robots.txt` só no domínio raiz. QA final rodado contra os domínios
+  reais: Lighthouse mobile 91/100/100/100 na Home, as 11 rotas do site
+  respondendo 200, widget do hero confirmado conversando com o agente n8n
+  de produção, painel do CRM carregando a tela de login. Spec completa em
+  [`docs/specs/fase5-cutover-dominio.md`](docs/specs/fase5-cutover-dominio.md).
+  Pendência de código encontrada e registrada, não corrigida nesta fase
+  (é conteúdo/metadata, não infraestrutura): a rota `/sobre` (e
+  possivelmente outras) reaproveita o Open Graph da Home em vez de ter o
+  próprio — fica para uma sessão futura de ajuste de SEO.
 
 ## Como rodar localmente
 

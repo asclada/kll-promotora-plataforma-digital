@@ -31,7 +31,7 @@ Correspondente bancário autorizado (não é instituição financeira, não conc
 
 ## Operating Context
 
-- Site atual em produção: kllpromotora.com.br (stack atual: React + Vite + Tailwind, hospedado via Netlify — **não é a stack alvo do redesign**, serve só como fonte de conteúdo real).
+- Site atual em produção: kllpromotora.com.br (stack atual: React + Vite + Tailwind — **não é a stack alvo do redesign**, serve só como fonte de conteúdo real). Nota de infraestrutura (Fase 5): o domínio já apontava para a Vercel via um registro DNS residual de uma versão ainda mais antiga do site, feita no Builder.io — nunca esteve de fato na Netlify, apesar do que a documentação anterior deste projeto dizia.
 - Empresa pequena/familiar — operada por pai e filho.
 - Captação de lead primária: clique que abre WhatsApp com mensagem pré-formatada (não há chat/backend real ainda) e formulário de contato.
 - Horário de atendimento: segunda a sexta 08:30–18h, sábado 09h–14h.

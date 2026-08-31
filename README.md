@@ -141,16 +141,28 @@ presentation).
   against the production agent and the Phase 2 CRM, including a real
   Gemini timeout handled without breaking the UI. Editing the sales
   funnel from the CRM's UI is still the Phase 2 fast-follow, unchanged.
-- **Phase 5 — Deploy + QA:** in progress. `N8N_WEBHOOK_URL` is now set on
-  the website's Vercel project (production + preview), and the CRM
-  (`kll-promotora-crm`) got its first deployment at
-  `kll-promotora-crm.vercel.app`, with its own Supabase env vars —
-  verified end-to-end (widget → agent → CRM) against these live
-  deployments, not just local dev. Both are still on `.vercel.app` URLs
-  today. What's left: pointing `kllpromotora.com.br` itself to this
-  website (replacing the current live site) and `painel.kllpromotora.com.br`
-  to the CRM, plus a final portfolio checklist. Detailed scope for that
-  cutover not yet defined.
+- **Phase 5 — Deploy + QA (final phase):** done. All three production
+  domains — `kllpromotora.com.br`, `www.kllpromotora.com.br`, and
+  `painel.kllpromotora.com.br` — point to the right Vercel projects
+  (website and CRM), all with valid SSL. Discovery made along the way:
+  this README previously described the live site as "hosted on Netlify"
+  — that was never true; the root domain already pointed to Vercel from
+  the site's earlier Builder.io days (the stack before this one). The
+  cutover itself happened mostly on the Vercel side (reassigning domain
+  ownership), plus two dedicated `CNAME` records on Cloudflare (`www` and
+  `painel`) with Cloudflare's proxy turned off (`DNS only`) on all three
+  domains — which also fixed a discrepancy where Cloudflare was injecting
+  its own `robots.txt` only on the root domain. Final QA run against the
+  live domains: mobile Lighthouse 91/100/100/100 on the homepage, all 11
+  site routes returning 200, the hero widget confirmed talking to the
+  production n8n agent, and the CRM panel loading its login screen. Full
+  spec at
+  [`docs/specs/fase5-cutover-dominio.md`](docs/specs/fase5-cutover-dominio.md)
+  (in Portuguese, matching the project's spec convention). One code
+  finding logged but not fixed this phase (content/metadata, not
+  infrastructure): the `/sobre` route (and possibly others) reuses the
+  homepage's Open Graph tags instead of having its own — left for a
+  future SEO pass.
 
 ## Running locally
 

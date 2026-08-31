@@ -12,11 +12,13 @@ correspondente bancário especializado em crédito consignado, composto por:
 1. **Website institucional (Next.js)** — site público de captação de leads
    para os quatro públicos atendidos (CLT, servidores públicos/SIAPE,
    aposentados/pensionistas INSS, militares), com estrutura de rotas
-   separadas e o card de agente de IA no hero (somente UI/frontend nesta
-   fase — ver seção 8 e `PRODUCT.md`).
+   separadas e o card de agente de IA no hero conversando de verdade com
+   o agente de triagem via proxy (ver seção 8 e `PRODUCT.md`).
 
-> Nota: projeto só de frontend nesta fase — não há backend/CRM neste
-> repositório. Se isso mudar, atualizar esta seção e a seção 8.
+> Nota: o CRM continua sendo um repositório separado
+> (`kll-promotora-crm`), mas este repositório **não é mais só frontend**
+> — `src/app/api/chat` é uma rota de API real (proxy sem estado para o
+> webhook do n8n). Ver seção 8.
 
 ## 2. Idioma
 
@@ -79,15 +81,25 @@ sinalizo nem escrevo proativamente — apenas mediante pedido.
   (`kll-promotora-main.zip` / `kll-atual-extracted/`) — usado como fonte
   de conteúdo real (textos, NAP, avisos legais), nunca copiado
   diretamente para o novo stack.
-- **Agente de IA do hero**: fora do escopo deste repositório nesta fase.
-  Aqui só existe a UI do card/transição/chat (mock ou placeholder de
-  integração) — sem lógica real de triagem por IA.
-- **Integração entre camadas**: não aplicável — projeto single-layer
-  (só frontend) nesta fase.
+- **Agente de IA do hero**: real desde a Fase 4. O card
+  (`src/components/home/AssistantCard.tsx`) conversa com o agente de
+  triagem n8n através de `src/app/api/chat` — um proxy sem estado do lado
+  do servidor (`N8N_WEBHOOK_URL` só no servidor, nunca exposto ao
+  cliente). A lógica de triagem em si (fluxo n8n) mora no repositório
+  separado `kll-promotora-n8n-agent`, e a gravação de leads acontece
+  direto no banco do CRM (`kll-promotora-crm`) — este repositório nunca
+  toca no banco do CRM diretamente.
+- **Integração entre camadas**: site → proxy (`/api/chat`, este repo) →
+  workflow n8n (repo externo) → banco do CRM (repo externo). Ver
+  diagrama em `README.pt-br.md` → "Arquitetura".
+- **Domínio de produção**: `kllpromotora.com.br` / `www` (este site) e
+  `painel.kllpromotora.com.br` (CRM) — cutover feito na Fase 5, DNS na
+  Cloudflare, domínios na Vercel. Detalhes em
+  `docs/specs/fase5-cutover-dominio.md`.
 
 ## 9. Última atualização
 
-2026-08-25
+2026-08-31
 
 ## 10. Processo de desenvolvimento — COMPLETO vs LEVE
 
