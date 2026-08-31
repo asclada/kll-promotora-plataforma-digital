@@ -2,11 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowRight, Lock, RotateCcw } from "lucide-react";
-import Link from "next/link";
-import WhatsappGlyph from "@/components/ui/WhatsappGlyph";
-import { segments } from "@/lib/content";
-import { whatsappLink } from "@/lib/site";
+import { ArrowRight, CheckCircle2, Lock, RotateCcw, Send } from "lucide-react";
 import { subscribeAssistantOpen } from "@/lib/assistant-bridge";
 
 /**
@@ -14,10 +10,10 @@ import { subscribeAssistantOpen } from "@/lib/assistant-bridge";
  * after a deliberate click, because a chat that starts itself is exactly the
  * pushiness this audience is bracing for.
  *
- * SCOPE: frontend only. The transcript below is a fixed script, not a model.
- * The integration seam is `handleAnswer`: replace the local `push` calls with
- * a request to the triage agent and stream its replies into `messages`. The
- * message shape (`Message`) is already what a real transcript would carry.
+ * Talks to the real triage agent via `/api/chat` (a stateless proxy to the
+ * n8n webhook, see fases-projeto/fase4-widget-integracao.md). `conversa_id`
+ * lives in sessionStorage so a reload mid-conversation resumes the same
+ * lead instead of starting a new one; "Recomeçar" clears it deliberately.
  */
 
 type Message = {
@@ -26,20 +22,12 @@ type Message = {
   text: string;
 };
 
-type Phase = "closed" | "asking" | "answered";
+type Phase = "closed" | "chatting" | "done";
 
-const OPENING: Message[] = [
-  {
-    id: "a1",
-    from: "agent",
-    text: "Oi! Eu sou o assistente da KLL Promotora. Vou fazer uma pergunta rápida para te encaminhar ao consultor certo.",
-  },
-  {
-    id: "a2",
-    from: "agent",
-    text: "Qual é o seu vínculo hoje?",
-  },
-];
+const CONVERSA_ID_KEY = "kll-assistant-conversa-id";
+const BOOTSTRAP_MESSAGE = "Olá";
+const NETWORK_ERROR_MESSAGE =
+  "Não conseguimos falar com o assistente agora. Tente novamente em instantes.";
 
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(false);
@@ -61,15 +49,25 @@ const bubbleDelays = [
   "[animation-delay:280ms]",
 ];
 
+function getOrCreateConversaId(): string {
+  const existing = window.sessionStorage.getItem(CONVERSA_ID_KEY);
+  if (existing) return existing;
+  const id = crypto.randomUUID();
+  window.sessionStorage.setItem(CONVERSA_ID_KEY, id);
+  return id;
+}
+
 export default function AssistantCard() {
   const [phase, setPhase] = useState<Phase>("closed");
   const [messages, setMessages] = useState<Message[]>([]);
   const [typing, setTyping] = useState(false);
-  const [chosen, setChosen] = useState<(typeof segments)[number] | null>(null);
+  const [input, setInput] = useState("");
   const reduced = usePrefersReducedMotion();
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const root = useRef<HTMLDivElement>(null);
+  const logEndRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<Phase>("closed");
+  const conversaIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     phaseRef.current = phase;
@@ -79,6 +77,10 @@ export default function AssistantCard() {
     const pending = timers.current;
     return () => pending.forEach(clearTimeout);
   }, []);
+
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+  }, [messages, typing, reduced]);
 
   /* Any "Simular" button elsewhere on this page opens straight into the same
      flow as clicking the card's own primary button — see assistant-bridge.ts.
@@ -124,57 +126,74 @@ export default function AssistantCard() {
     timers.current.push(id);
   };
 
-  function open() {
-    setPhase("asking");
+  async function sendToAgent(conversaId: string, mensagem: string) {
     setTyping(true);
-    /* The card grows in place; on a phone that growth happens below the fold
-       unless we bring its top edge back under the sticky header. */
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ conversa_id: conversaId, mensagem }),
+      });
+      const data = (await res.json().catch(() => null)) as {
+        respostas?: unknown;
+        concluida?: unknown;
+      } | null;
+
+      if (!res.ok || !data || !Array.isArray(data.respostas)) {
+        throw new Error("resposta-invalida");
+      }
+
+      setTyping(false);
+      const agentMessages: Message[] = data.respostas
+        .filter((text): text is string => typeof text === "string")
+        .map((text, i) => ({ id: `a-${Date.now()}-${i}`, from: "agent", text }));
+      setMessages((prev) => [...prev, ...agentMessages]);
+
+      if (data.concluida === true) {
+        setPhase("done");
+      }
+    } catch {
+      setTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        { id: `err-${Date.now()}`, from: "agent", text: NETWORK_ERROR_MESSAGE },
+      ]);
+    }
+  }
+
+  function open() {
+    setPhase("chatting");
     wait(60, () =>
       root.current?.scrollIntoView({
         behavior: reduced ? "auto" : "smooth",
         block: "start",
       }),
     );
-    wait(700, () => {
-      setTyping(false);
-      setMessages(OPENING);
-    });
+    const conversaId = getOrCreateConversaId();
+    conversaIdRef.current = conversaId;
+    void sendToAgent(conversaId, BOOTSTRAP_MESSAGE);
   }
 
   function reset() {
     timers.current.forEach(clearTimeout);
     timers.current = [];
+    window.sessionStorage.removeItem(CONVERSA_ID_KEY);
+    conversaIdRef.current = null;
     setPhase("closed");
     setMessages([]);
-    setChosen(null);
+    setInput("");
     setTyping(false);
   }
 
-  /* Integration seam — see the file header. */
-  function handleAnswer(segment: (typeof segments)[number]) {
-    setChosen(segment);
-    setMessages((prev) => [
-      ...prev,
-      { id: `u-${segment.slug}`, from: "user", text: segment.name },
-    ]);
-    setTyping(true);
-    wait(900, () => {
-      setTyping(false);
-      setPhase("answered");
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `a-${segment.slug}`,
-          from: "agent",
-          text: `${segment.proof} Vou te passar para um consultor agora — é gratuito e sem compromisso.`,
-        },
-      ]);
-    });
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const text = input.trim();
+    const conversaId = conversaIdRef.current;
+    if (!text || typing || !conversaId) return;
+    setMessages((prev) => [...prev, { id: `u-${Date.now()}`, from: "user", text }]);
+    setInput("");
+    void sendToAgent(conversaId, text);
   }
-
-  const zap = chosen
-    ? whatsappLink(chosen.whatsapp, `assistente-${chosen.slug}`)
-    : "";
 
   return (
     <div ref={root} className="scroll-mt-28 bg-sheet text-ink shadow-lift">
@@ -250,7 +269,7 @@ export default function AssistantCard() {
             role="log"
             aria-live="polite"
             aria-label="Conversa com o assistente da KLL Promotora"
-            className="flex min-h-64 flex-col gap-3 bg-paper-2 px-5 py-6 sm:px-6"
+            className="flex max-h-96 min-h-64 flex-col gap-3 overflow-y-auto bg-paper-2 px-5 py-6 sm:px-6"
           >
             {messages.map((message, i) => (
               <p
@@ -284,57 +303,50 @@ export default function AssistantCard() {
                 />
               </p>
             )}
+            <div ref={logEndRef} />
           </div>
 
           <div className="border-t border-rule px-5 py-5 sm:px-6">
-            {phase === "asking" && messages.length > 0 && (
-              <ul className="grid gap-2">
-                {segments.map((segment) => (
-                  <li key={segment.slug}>
-                    <button
-                      type="button"
-                      onClick={() => handleAnswer(segment)}
-                      className="flex min-h-12 w-full items-center justify-between gap-3 rounded-mark border border-rule-strong px-4 text-left text-base font-semibold transition-colors duration-150 hover:border-indigo hover:bg-indigo-tint hover:text-indigo-deep"
-                    >
-                      {segment.name}
-                      <ArrowRight className="size-5 shrink-0 text-indigo" aria-hidden="true" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {phase === "answered" && chosen && (
-              <div className="animate-sheet">
-                <a
-                  href={zap}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex min-h-14 w-full items-center justify-center gap-3 rounded-mark bg-selo px-5 font-display text-lg font-bold text-ink no-underline transition-colors duration-150 hover:bg-selo-deep"
+            {phase === "chatting" ? (
+              <form onSubmit={handleSubmit} className="flex items-center gap-2">
+                <label htmlFor="assistant-input" className="sr-only">
+                  Sua mensagem
+                </label>
+                <input
+                  id="assistant-input"
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={typing}
+                  placeholder="Digite sua resposta…"
+                  autoComplete="off"
+                  className="min-h-12 flex-1 rounded-mark border border-rule-strong bg-sheet px-4 text-base text-ink placeholder:text-ink-3 focus:border-indigo focus:outline-none disabled:opacity-60"
+                />
+                <button
+                  type="submit"
+                  disabled={typing || !input.trim()}
+                  className="flex size-12 shrink-0 items-center justify-center rounded-mark bg-indigo text-white transition-colors duration-150 hover:bg-indigo-deep disabled:opacity-40"
+                  aria-label="Enviar"
                 >
-                  <WhatsappGlyph className="size-6 shrink-0" />
-                  Continuar no WhatsApp
-                </a>
-                <p className="mt-4 text-xs text-ink-2">
-                  Ao continuar, você concorda que a KLL Promotora use seu nome e telefone
-                  para retornar o contato e simular seu crédito, conforme a
-                  LGPD.{" "}
-                  <Link
-                    href="/politica-privacidade"
-                    className="text-indigo underline"
-                  >
-                    Política de privacidade
-                  </Link>
-                  .
-                </p>
+                  <Send className="size-5" aria-hidden="true" />
+                </button>
+              </form>
+            ) : (
+              /* Triagem concluída: sem CTA, sem redirecionamento. O time da
+                 KLL retoma o contato humano pelo WhatsApp por conta própria
+                 — a mensagem final do agente já deixou isso claro, este
+                 rodapé só sinaliza visualmente que a conversa encerrou. */
+              <div className="flex min-h-12 items-center justify-center gap-2 rounded-mark border border-rule-strong bg-paper-2 px-4 text-center text-sm font-semibold text-ink-2">
+                <CheckCircle2 className="size-4 shrink-0 text-online" aria-hidden="true" />
+                Triagem concluída — aguarde nosso contato pelo WhatsApp
               </div>
             )}
 
-            {phase === "asking" && (
+            {phase === "chatting" && (
               <p className="mt-4 flex items-start gap-2 text-xs text-ink-2">
                 <Lock className="mt-0.5 size-3.5 shrink-0 text-indigo" aria-hidden="true" />
-                Nada é contratado aqui. Nenhum dado é enviado até você abrir o
-                WhatsApp.
+                Nada é contratado aqui. Seus dados só são usados para o time
+                da KLL retomar o contato.
               </p>
             )}
           </div>
