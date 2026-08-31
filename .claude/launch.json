@@ -7,6 +7,13 @@
       "runtimeArgs": ["run", "dev"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "kll-crm-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "D:\\kll-promotora-crm", "run", "dev"],
+      "port": 3100,
+      "autoPort": true
     }
   ]
 }

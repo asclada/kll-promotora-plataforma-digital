@@ -30,16 +30,16 @@ A solução completa tem três partes:
    clientes, arquivados, detalhe read-only da triagem); editar o funil de
    vendas pela UI (status, valor negociado, banco, observações) é um
    refinamento deliberadamente deixado pra depois, ainda não construído.
-3. **Um widget de qualificação de leads por IA** — o card do hero já existe
-   nesta interface e se transforma num chat ao ser clicado, mas hoje é um
-   **mock de frontend** (roteiro fixo, sem chamada de IA real). A integração
-   de verdade (via workflow n8n, gravando no banco do CRM) é a próxima fase.
-   **Não iniciada.**
+3. **Um widget de qualificação de leads por IA** — o card do hero conversa
+   de verdade com o agente n8n agora (via um proxy sem estado neste
+   repositório), que faz a triagem do lead (nome, tipo de vínculo, CPF,
+   telefone) e grava direto no banco do CRM. **Concluído.**
 
-**Este repositório é só o site.** Não tem banco de dados, não tem rota de API,
-não tem nenhuma integração de IA real — a única "captação" hoje é um link
-`https://api.whatsapp.com/send?phone=...` com mensagem pré-preenchida, igual
-ao comportamento do site anterior.
+**Este repositório é o site mais uma rota de API.** `src/app/api/chat` é um
+proxy fino, do lado do servidor, para o webhook do n8n — nunca toca no banco
+do CRM diretamente. Todo o resto da captação de leads no site continua sendo
+um link `https://api.whatsapp.com/send?phone=...` com mensagem pré-preenchida,
+igual ao comportamento do site anterior.
 
 ## Stack técnica
 
@@ -66,7 +66,7 @@ Site (Next.js, este repo) — sem backend
 api.whatsapp.com/send  — link direto, mensagem pré-formatada, sem triagem
 ```
 
-**Planejada (próximas fases, fora deste repositório):**
+**Atual (widget → agente → CRM):**
 
 ```
 Usuário
@@ -74,7 +74,7 @@ Usuário
   ▼
 Site (Next.js, este repo)
   │
-  │  widget de chat → proxy sem estado
+  │  POST /api/chat (proxy sem estado, N8N_WEBHOOK_URL só no servidor)
   ▼
 Workflow n8n (webhook, externo) — dono da lógica de triagem por IA
   │
@@ -131,14 +131,29 @@ no cliente, só apresentação de conteúdo real).
   webhook (duas conversas completas simuladas, incluindo nova tentativa
   após CPF em formato inválido). Ainda não conectado ao site — essa
   ligação é a Fase 4.
-- **Fase 4 — Widget + integração:** não iniciada. O widget de chat
-  (`src/components/home/AssistantCard.tsx`) já existe desde a Fase 1,
-  como mock de frontend com roteiro fixo; falta só a integração real —
-  ligar esse widget ao webhook do agente da Fase 3, e confirmar que os
-  leads aparecem corretamente no CRM da Fase 2 (widget → n8n → CRM →
-  Supabase, ponta a ponta). Escopo detalhado ainda não definido.
-- **Fase 5 — Deploy + QA:** não iniciada. Domínio de produção, variáveis
-  de ambiente e checklist final de portfólio. Escopo detalhado ainda não
+- **Fase 4 — Widget + integração:** concluída. O widget de chat
+  (`src/components/home/AssistantCard.tsx`) agora conversa de verdade com
+  o agente da Fase 3 através de um proxy sem estado (`src/app/api/chat`),
+  no lugar do roteiro fixo. O `conversa_id` fica em `sessionStorage`, para
+  um reload no meio da conversa retomar em vez de criar um lead duplicado.
+  A resposta do webhook do agente ganhou um campo `concluida` (aplicado
+  direto no workflow de produção via API REST do n8n) para o widget saber
+  quando desabilitar o campo de envio e mostrar uma linha de confirmação
+  simples — sem CTA de WhatsApp, já que o próximo passo é um atendente
+  humano ligar de volta, não a pessoa continuar sozinha. Verificado ponta
+  a ponta contra o agente em produção e o CRM da Fase 2, incluindo um
+  timeout real do Gemini tratado sem quebrar a UI. Editar o funil de
+  vendas pela UI do CRM continua sendo o fast-follow pendente da Fase 2,
+  sem mudança.
+- **Fase 5 — Deploy + QA:** em andamento. `N8N_WEBHOOK_URL` já está
+  configurada no projeto Vercel do site (produção + preview), e o CRM
+  (`kll-promotora-crm`) ganhou seu primeiro deploy em
+  `kll-promotora-crm.vercel.app`, com as próprias env vars do Supabase —
+  verificado ponta a ponta (widget → agente → CRM) contra esses deploys
+  reais, não só em dev local. Os dois ainda estão em URL `.vercel.app`.
+  Falta: apontar o próprio `kllpromotora.com.br` para este site (no lugar
+  do site atual) e `painel.kllpromotora.com.br` para o CRM, além de um
+  checklist final de portfólio. Escopo detalhado desse cutover ainda não
   definido.
 
 ## Como rodar localmente
@@ -150,7 +165,10 @@ npm run build       # build de produção
 npm run typecheck   # TypeScript sem emitir arquivos
 ```
 
-Sem variáveis de ambiente nesta fase — não há integração externa.
+Precisa da `N8N_WEBHOOK_URL` (ver `.env.example`) para o widget do
+assistente falar com o agente de triagem real — sem ela, `/api/chat`
+devolve 503 e o widget mostra uma mensagem de indisponibilidade em vez
+de conversar.
 
 ## Onde mexer no conteúdo
 
